@@ -2,17 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:id="@+id/main">
+    android:padding="16dp">
 
     <!-- Tiêu đề -->
     <TextView
-        android:id="@+id/login_title"
+        android:id="@+id/register_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Đăng Nhập"
+        android:text="Đăng Ký"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,10 +26,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Tên đăng nhập"
-        app:layout_constraintTop_toBottomOf="@id/login_title"
+        app:layout_constraintTop_toBottomOf="@id/register_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp"/>
+
+    <!-- Email -->
+    <EditText
+        android:id="@+id/email_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@id/username_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <!-- Password -->
     <EditText
@@ -38,32 +50,32 @@
         android:layout_height="wrap_content"
         android:hint="Mật khẩu"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/username_input"
+        app:layout_constraintTop_toBottomOf="@id/email_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Nút Đăng Nhập -->
-    <Button
-        android:id="@+id/login_button"
+    <!-- Confirm Password -->
+    <EditText
+        android:id="@+id/confirm_password_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Đăng Nhập"
+        android:hint="Xác nhận mật khẩu"
+        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/password_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="16dp"/>
 
-    <!-- Text chuyển sang Đăng Ký -->
-    <TextView
-        android:id="@+id/register_text"
-        android:layout_width="wrap_content"
+    <!-- Nút Đăng Ký -->
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Chưa có tài khoản? Đăng ký ngay"
-        android:textColor="@android:color/holo_blue_dark"
-        app:layout_constraintTop_toBottomOf="@id/login_button"
+        android:text="Đăng Ký"
+        app:layout_constraintTop_toBottomOf="@id/confirm_password_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="24dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
