@@ -1,4 +1,4 @@
-package com.example.findnest;
+package com.example.findnest.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.findnest.R;
 
 public class LoginActivity extends AppCompatActivity {
 
