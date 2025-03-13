@@ -13,7 +13,8 @@ import java.io.OutputStream;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {
-    Context dbContext;
+
+    Context appContext;
     public SQLiteDatabase db;
     static String dbName = "pe-database.db";
     static int dbVersion = 1;
@@ -21,14 +22,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
     public DatabaseHelper(Context context)
     {
         super(context, dbName, null, dbVersion);
-        dbContext = context;
+        appContext = context;
     }
 
     public void DB2SDCard()
     {
         try
         {
-            File file = dbContext.getDatabasePath(dbName);
+            File file = appContext.getDatabasePath(dbName);
             //Bỏ comment khi muốn xóa database hiện tại
             if (file.exists())
             {
@@ -37,14 +38,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
             if (file.exists())
             {
-                Toast.makeText(dbContext.getApplicationContext(), "file CSDL đã tồn tại!", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext.getApplicationContext(), "file CSDL đã tồn tại!", Toast.LENGTH_LONG).show();
                 this.close();
             } else
             {
                 try
                 {
                     this.getReadableDatabase();
-                    InputStream in = dbContext.getAssets().open(dbName);
+                    InputStream in = appContext.getAssets().open(dbName);
                     OutputStream out = new FileOutputStream(file);
                     byte[] buf = new byte[1024];
                     int len;
@@ -54,30 +55,30 @@ public class DatabaseHelper extends SQLiteOpenHelper
                     }
                     out.close();
                     in.close();
-                    Toast.makeText(dbContext.getApplicationContext(), "Tải database lên điện thoại thành công", Toast.LENGTH_LONG).show();
+                    Toast.makeText(appContext.getApplicationContext(), "Tải database lên điện thoại thành công", Toast.LENGTH_LONG).show();
                 } catch (Exception e)
                 {
-                    Toast.makeText(dbContext.getApplicationContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
+                    Toast.makeText(appContext.getApplicationContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
         } catch (Exception eio)
         {
             eio.printStackTrace();
-            Toast.makeText(dbContext.getApplicationContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
+            Toast.makeText(appContext.getApplicationContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
         }
     }
 
     public Cursor getCursor(String sql)
     {
-        db = SQLiteDatabase.openDatabase(dbContext.getDatabasePath(dbName).getPath(), null, SQLiteDatabase.OPEN_READWRITE);
+        db = SQLiteDatabase.openDatabase(appContext.getDatabasePath(dbName).getPath(), null, SQLiteDatabase.OPEN_READWRITE);
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
 
     public void execsql(String sql)
     {
-        db = SQLiteDatabase.openDatabase(dbContext.getDatabasePath(dbName).getPath(), null, SQLiteDatabase.OPEN_READWRITE);
+        db = SQLiteDatabase.openDatabase(appContext.getDatabasePath(dbName).getPath(), null, SQLiteDatabase.OPEN_READWRITE);
         db.execSQL(sql);
         db.close();
     }
