@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.lombok)
     implementation(libs.osmdroid)
     annotationProcessor(libs.lombok)
+    implementation(libs.mpandroidchart)
     implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

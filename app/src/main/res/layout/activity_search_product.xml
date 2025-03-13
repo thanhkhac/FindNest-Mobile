@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="16dp">
+
+    <Spinner
+        android:id="@+id/spinner_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edt_search_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter search keyword"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edt_min_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Min price"
+        android:inputType="number"
+        android:visibility="gone" />
+
+    <!-- Max Price -->
+    <EditText
+        android:id="@+id/edt_max_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Max price"
+        android:inputType="number"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_search_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp" />
+
+</LinearLayout>
