@@ -2,10 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="16dp">
+              android:orientation="vertical">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/brand"
+        android:paddingTop="30dp">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Statistics"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bar_chart"

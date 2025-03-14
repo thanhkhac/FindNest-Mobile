@@ -20,16 +20,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ProductDetailActivity"
+            android:name=".ui.ProductDetailFragment"
             android:exported="true" />
         <activity
-            android:name=".ui.ListProductActivity"
+            android:name=".ui.ListProductFragment"
             android:exported="true" />
         <activity
-            android:name=".ui.StatisticActivity"
+            android:name=".ui.StatisticFragment"
             android:exported="true" />
         <activity
-            android:name=".ui.SearchProductActivity"
+            android:name=".ui.SearchProductFragment"
             android:exported="true" />
         <activity
             android:name=".ui.MainActivity"

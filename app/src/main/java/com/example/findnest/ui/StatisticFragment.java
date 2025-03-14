@@ -2,43 +2,51 @@ package com.example.findnest.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.findnest.R;
 import com.example.findnest.model.ProductEntity;
 import com.example.findnest.repository.Repository;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StatisticActivity extends AppCompatActivity {
+public class StatisticFragment extends Fragment {
 
     private Repository repository;
     private BarChart barChart;
     private PieChart pieChart;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistic);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_statistic, container, false);
 
-        repository = new Repository(this);
-        barChart = findViewById(R.id.bar_chart);
-        pieChart = findViewById(R.id.pie_chart);
+        repository = new Repository(requireContext());
+        barChart = view.findViewById(R.id.bar_chart);
+        pieChart = view.findViewById(R.id.pie_chart);
+
         showPriceStatistics();
         showCategoryStatistics();
+
+        return view;
     }
 
-    // Thống kê giá
     private void showPriceStatistics() {
         List<ProductEntity> products = repository.getAll();
         if (products.isEmpty()) return;
@@ -48,8 +56,7 @@ public class StatisticActivity extends AppCompatActivity {
             if (p.getPrice() < minPrice) minPrice = p.getPrice();
             if (p.getPrice() > maxPrice) maxPrice = p.getPrice();
         }
-        //Khoảng 1
-        //(maxPrice - minPrice) / 3: Tính giá trị của mỗi khoảng
+
         int range1 = minPrice + (maxPrice - minPrice) / 3;
         int range2 = minPrice + 2 * (maxPrice - minPrice) / 3;
 
@@ -70,11 +77,9 @@ public class StatisticActivity extends AppCompatActivity {
 
         BarData barData = new BarData(dataSet);
         barChart.setData(barData);
-        //Cập nhật
         barChart.invalidate();
     }
 
-    // Thống kê category
     private void showCategoryStatistics() {
         List<ProductEntity> products = repository.getAll();
         if (products.isEmpty()) return;

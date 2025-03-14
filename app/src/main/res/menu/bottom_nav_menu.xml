@@ -14,8 +14,4 @@
         android:icon="@drawable/search_24px"
         android:title="Search"/>
 
-    <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/person_24px"
-        android:title="Profile"/>
 </menu>
