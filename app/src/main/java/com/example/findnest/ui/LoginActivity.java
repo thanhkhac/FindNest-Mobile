@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         authManager = new AuthManager(LoginActivity.this);
         authService = RetrofitClient.getClient(authManager).create(IAuthenticationService.class);
 
-
         // Ánh xạ các view
         usernameInput = findViewById(R.id.username_input);
         passwordInput = findViewById(R.id.password_input);
@@ -79,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                     //Log.d("Shared_Pref", new Gson().toJson(authManager.getAccessToken() + authManager.getRefreshToken()));
                     Toast.makeText(LoginActivity.this, "Login successfull", Toast.LENGTH_SHORT).show();
 
-                    Intent it = new Intent(LoginActivity.this, HomeActivity.class);
+                    Intent it = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(it);
 
                 } else {
@@ -89,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<TokenModel> call, Throwable t) {
-                Log.e("Login", "Error: " + t.getMessage());
+                Log.e("LoginInFo", "Error: " + t.getMessage());
             }
         });
     }

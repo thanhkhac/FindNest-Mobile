@@ -1,12 +1,8 @@
-package com.example.findnest.ui.ui;
+package com.example.findnest.ui;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.findnest.R;
@@ -30,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_search:
                     selectedFragment = new HomeFragment();
+
                     break;
                 case R.id.nav_profile:
-                    selectedFragment = new HomeFragment();
+                    selectedFragment = new AccountFragment();
                     break;
             }
 

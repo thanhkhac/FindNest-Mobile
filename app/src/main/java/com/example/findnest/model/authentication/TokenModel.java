@@ -1,8 +1,13 @@
 package com.example.findnest.model.authentication;
 
 public class TokenModel {
-    private  String accessToken;
-    private  String refreshToken;
+    private String accessToken;
+    private String refreshToken;
+
+    public TokenModel() {
+    }
+
+
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;

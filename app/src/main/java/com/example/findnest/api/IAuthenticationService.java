@@ -13,5 +13,5 @@ public interface IAuthenticationService {
     Call<TokenModel> login(@Body LoginRequest request);
 
     @POST("api/authentication/refresh")
-    Call<TokenModel> refreshToken(@Header("Authorization") TokenModel token);
+    Call<TokenModel> refreshToken(@Body TokenModel token);
 }
