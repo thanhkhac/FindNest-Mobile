@@ -14,7 +14,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 public class RetrofitClient {
-    private static final String BASE_URL =  "http://192.168.0.101:8080/";
+    private static final String BASE_URL =  "https://thanhkhac.id.vn/";
 //    private static final String BASE_URL = "https://10.0.2.2:7011/";
     private static Retrofit retrofit = null;
 

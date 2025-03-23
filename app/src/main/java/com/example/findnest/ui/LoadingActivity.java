@@ -1,5 +1,7 @@
 package com.example.findnest.ui;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +47,7 @@ public class LoadingActivity extends AppCompatActivity {
 
             checkToken();
         } catch (Exception ex) {
+            Log.e(TAG, "Error in onCreate: " + ex.getMessage(), ex);
             Toast.makeText(LoadingActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -54,7 +57,7 @@ public class LoadingActivity extends AppCompatActivity {
         String accessToken = authManager.getAccessToken();
         String refreshToken = authManager.getRefreshToken();
 
-        if (accessToken.isEmpty() || refreshToken.isEmpty()) {
+        if ( accessToken == null || refreshToken == null || accessToken.isEmpty() || refreshToken.isEmpty()) {
             Intent it = new Intent(LoadingActivity.this, LoginActivity.class);
             startActivity(it);
         }
