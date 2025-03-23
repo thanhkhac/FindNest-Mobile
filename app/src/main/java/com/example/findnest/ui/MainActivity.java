@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.findnest.R;
-import com.example.findnest.ui.ui.HomeFragment;
+import com.example.findnest.ui.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
