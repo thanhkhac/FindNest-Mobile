@@ -22,8 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthInterceptor implements Interceptor {
 
-//    private final String BASE_URL = "https://192.168.0.101:7011/";
-    private static final String BASE_URL = "https://10.0.2.2:7011/";
+    private final String BASE_URL = "http://192.168.0.101:8080/";
+//    private static final String BASE_URL = "https://10.0.2.2:7011/";
 
     private AuthManager _authManager;
     private IAuthenticationService _authenticationService;
