@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.lombok)
     implementation(libs.osmdroid)
+    annotationProcessor(libs.lombok)
     implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

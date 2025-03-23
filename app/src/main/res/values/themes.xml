@@ -1,8 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="Base.Theme.FindNest" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Màu của Status Bar -->
+        <item name="android:statusBarColor">#dc3545</item>
+        <!-- Màu chính của ứng dụng -->
+        <item name="colorPrimary">#dc3545</item>
+        <!-- Màu nhấn -->
+        <item name="colorAccent">#7E0912</item>
     </style>
 
     <style name="Theme.FindNest" parent="Base.Theme.FindNest" />
