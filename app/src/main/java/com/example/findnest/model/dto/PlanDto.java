@@ -1,4 +1,4 @@
-package com.example.findnest.model.response;
+package com.example.findnest.model.dto;
 
 import java.math.BigDecimal;
 
@@ -16,6 +16,4 @@ public class PlanDto {
     public  int priorityLevel;
     public  int duration;
     public BigDecimal price;
-
-
 }

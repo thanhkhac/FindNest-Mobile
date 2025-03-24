@@ -1,4 +1,4 @@
-package com.example.findnest.model.response;
+package com.example.findnest.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

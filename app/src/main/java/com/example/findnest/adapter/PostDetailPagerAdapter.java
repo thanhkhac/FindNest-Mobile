@@ -4,10 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.denzcoskun.imageslider.models.SlideModel;
-import com.example.findnest.R;
-import com.example.findnest.ui.ui.PostImageFragment;
-import com.example.findnest.ui.ui.ThumbnailFragment;
+import com.example.findnest.ui.PostImageFragment;
+import com.example.findnest.ui.ThumbnailFragment;
 
 import java.util.List;
 

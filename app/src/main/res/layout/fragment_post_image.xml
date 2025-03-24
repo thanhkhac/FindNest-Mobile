@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         app:iss_auto_cycle="true"
-        app:iss_period="3000"
+        app:iss_period="2000"
         android:background="@drawable/border"
-        app:iss_delay="3000" />
+        app:iss_delay="2000" />
     <!-- ImageSlider -->
 
 
