@@ -1,5 +1,9 @@
 package com.example.findnest.ui;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,12 +12,15 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.findnest.R;
+import com.example.findnest.auth.AuthManager;
 
 public class AccountFragment extends Fragment {
 
+    AuthManager authManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,6 +38,20 @@ public class AccountFragment extends Fragment {
                 transaction.commit();
             }
         });
+
+        Context context = requireContext();
+        authManager = new AuthManager(context);
+        Button btnLogout = view.findViewById(R.id.logout_button);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                authManager.clearTokens();
+                Intent it = new Intent(context, LoginActivity.class);
+                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(it);
+            }
+        });
+
         return view;
     }
 }
