@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.findnest.R;
+import com.example.findnest.auth.AuthManager;
 import com.example.findnest.ui.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private AuthManager authManager;
 
     @Override
     //Bundle savedInstanceState:
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+        authManager = new AuthManager(MainActivity.this);
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
 
@@ -31,9 +36,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_home:
                     selectedFragment = new HomeFragment();
                     break;
-                case R.id.nav_search:
-                    selectedFragment = new HomeFragment();
-
+                case R.id.nav_add:
+                    selectedFragment = CreatePostFragment.newInstance(authManager);
                     break;
                 case R.id.nav_profile:
                     selectedFragment = new AccountFragment();
