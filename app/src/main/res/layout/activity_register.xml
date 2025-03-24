@@ -83,6 +83,7 @@
             app:boxCornerRadiusTopStart="8dp"
             app:boxStrokeColor="#DC3545"
             app:endIconMode="clear_text"
+            app:endIconTint="#DC3545"
             app:hintTextColor="#DC3545"
             app:layout_constraintTop_toBottomOf="@id/register_title">  <!-- Adds a clear (X) button -->
 
@@ -112,6 +113,7 @@
             app:boxCornerRadiusTopStart="8dp"
             app:boxStrokeColor="#DC3545"
             app:endIconMode="clear_text"
+            app:endIconTint="#DC3545"
             app:hintTextColor="#DC3545"
             app:layout_constraintTop_toBottomOf="@id/fullname_input_container">  <!-- Adds a clear (X) button -->
 
@@ -142,6 +144,7 @@
             app:boxCornerRadiusTopStart="8dp"
             app:boxStrokeColor="#DC3545"
             app:endIconMode="clear_text"
+            app:endIconTint="#DC3545"
             app:hintTextColor="#DC3545"
             app:layout_constraintTop_toBottomOf="@id/username_input_container">  <!-- Adds a clear (X) button -->
 
@@ -172,6 +175,7 @@
             app:boxCornerRadiusTopStart="8dp"
             app:boxStrokeColor="#DC3545"
             app:endIconMode="clear_text"
+            app:endIconTint="#DC3545"
             app:hintTextColor="#DC3545"
             app:layout_constraintTop_toBottomOf="@id/email_input_container">  <!-- Adds a clear (X) button -->
 
@@ -203,6 +207,7 @@
             app:boxCornerRadiusTopStart="8dp"
             app:boxStrokeColor="#DC3545"
             app:endIconMode="clear_text"
+            app:endIconTint="#DC3545"
             app:hintTextColor="#DC3545"
             app:layout_constraintTop_toBottomOf="@id/password_input_container">  <!-- Adds a clear (X) button -->
 
