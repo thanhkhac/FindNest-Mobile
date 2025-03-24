@@ -27,7 +27,8 @@
                 android:id="@+id/edit_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="Cho thuê phòng trọ"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- 2. Chọn khu vực -->
@@ -67,16 +68,6 @@
             android:layout_height="300dp"
             android:layout_marginTop="16dp" />
 
-        <!-- Bản đồ để chọn tọa độ -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_select_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Chọn vị trí trên bản đồ"
-            android:layout_marginTop="8dp"
-            app:cornerRadius="8dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
         <!-- 3. Nhập giá -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_price"
@@ -91,6 +82,14 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Switch Giá thỏa thuận -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_negotiable_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Giá thỏa thuận"
+            android:layout_marginTop="8dp" />
 
         <!-- 4. Nhập diện tích -->
         <com.google.android.material.textfield.TextInputLayout
@@ -136,6 +135,48 @@
                 android:layout_height="wrap_content"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Ô nhập mô tả -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập mô tả"
+            android:layout_marginTop="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="1000">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="10" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Ô nhập địa chỉ cụ thể -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_specific_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập địa chỉ cụ thể (ví dụ: Thôn 1)"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_specific_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Switch AI tự động điền -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_ai_auto_fill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AI tự động điền"
+            android:layout_marginTop="8dp" />
 
         <!-- 7. Tải ảnh bìa lên -->
         <TextView
