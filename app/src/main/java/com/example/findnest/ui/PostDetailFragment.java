@@ -99,7 +99,7 @@ public class PostDetailFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     postDetail = response.body();
                     importData();
-                    loadMap(postDetail.latitude, postDetail.longitude);
+                    loadMap(postDetail.getLatitude(), postDetail.getLongitude());
                 } else {
 
                     Toast.makeText(getContext(), "Lỗi lấy dữ liệu!", Toast.LENGTH_SHORT).show();
@@ -130,11 +130,11 @@ public class PostDetailFragment extends Fragment {
         postTitle.setText(postDetail.getTitle());
         postAddress.setText(postDetail.getAddress());
         postRoom.setText(String.valueOf(postDetail.getBedRoomCount()));
-        postCreated.setText(postDetail.getCreatedUser().fullName + "  ");
+        postCreated.setText(postDetail.getCreatedUser().getFullName() + "  ");
         MoTa.setText(postDetail.getDescription());
         Price.setText(formattedPrice);
         postArea.setText(String.valueOf(postDetail.getArea())+ "m²" );
-        postCreatedPhone.setText(postDetail.getCreatedUser().contactPhoneNumber);
+        postCreatedPhone.setText(postDetail.getCreatedUser().getContactPhoneNumber());
         postBathroom.setText(String.valueOf(postDetail.getBathRoomCount()));
         thumbnailUrl = BASE_UPLOAD_URL + postDetail.getThumbnail();
 

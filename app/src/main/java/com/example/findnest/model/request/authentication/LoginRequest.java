@@ -1,4 +1,4 @@
-package com.example.findnest.model.authentication;
+package com.example.findnest.model.request.authentication;
 
 public class LoginRequest {
     private  String userName;

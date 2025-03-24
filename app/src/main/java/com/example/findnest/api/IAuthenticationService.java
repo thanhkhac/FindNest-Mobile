@@ -1,11 +1,10 @@
 package com.example.findnest.api;
 
-import com.example.findnest.model.authentication.TokenModel;
-import com.example.findnest.model.authentication.LoginRequest;
+import com.example.findnest.model.request.authentication.LoginRequest;
+import com.example.findnest.model.response.response.TokenModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface IAuthenticationService {

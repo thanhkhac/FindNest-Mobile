@@ -1,4 +1,4 @@
-package com.example.findnest.model.authentication;
+package com.example.findnest.model.response.response;
 
 public class TokenModel {
     private String accessToken;

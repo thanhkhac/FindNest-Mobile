@@ -14,8 +14,8 @@ import com.example.findnest.R;
 import com.example.findnest.api.IAuthenticationService;
 import com.example.findnest.api.RetrofitClient;
 import com.example.findnest.auth.AuthManager;
-import com.example.findnest.model.authentication.LoginRequest;
-import com.example.findnest.model.authentication.TokenModel;
+import com.example.findnest.model.request.authentication.LoginRequest;
+import com.example.findnest.model.response.response.TokenModel;
 import com.google.gson.Gson;
 
 import retrofit2.Call;

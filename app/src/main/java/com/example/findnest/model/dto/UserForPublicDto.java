@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserForPublicDto {
-    public String id;
-    public String fullName;
-    public String avatar;
-    public String contactPhoneNumber;
-    public String zalo;
-    public String facebook;
+    private String id;
+    private String fullName;
+    private String avatar;
+    private String contactPhoneNumber;
+    private String zalo;
+    private String facebook;
 }

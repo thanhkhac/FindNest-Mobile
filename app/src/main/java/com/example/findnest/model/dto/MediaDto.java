@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MediaDto {
-    public UUID id;
-    public String path;
-    public int order;
-
-
+    private UUID id;
+    private String path;
+    private int order;
 }

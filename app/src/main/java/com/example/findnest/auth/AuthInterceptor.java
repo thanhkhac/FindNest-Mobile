@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.findnest.api.IAuthenticationService;
-import com.example.findnest.model.authentication.TokenModel;
+import com.example.findnest.model.response.response.TokenModel;
 
 import org.json.JSONObject;
 

@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlanDto {
-    public   int id;
-    public  int priorityLevel;
-    public  int duration;
-    public BigDecimal price;
+    private   int id;
+    private  int priorityLevel;
+    private  int duration;
+    private BigDecimal price;
 }

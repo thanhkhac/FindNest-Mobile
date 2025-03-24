@@ -11,17 +11,12 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.findnest.R;
 import com.example.findnest.api.IAuthenticationService;
 import com.example.findnest.api.RetrofitClient;
 import com.example.findnest.auth.AuthManager;
-import com.example.findnest.model.authentication.TokenModel;
-import com.google.android.material.textview.MaterialTextView;
-import com.google.gson.Gson;
+import com.example.findnest.model.response.response.TokenModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;

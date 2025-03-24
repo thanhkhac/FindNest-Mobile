@@ -1,7 +1,7 @@
 package com.example.findnest.api;
 
 import com.example.findnest.model.Plan;
-import com.example.findnest.model.authentication.TokenModel;
+import com.example.findnest.model.response.response.TokenModel;
 
 import java.util.List;
 

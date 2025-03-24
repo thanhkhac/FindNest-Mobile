@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegionDto {
-    public String code;
-    public String name;
-    public String nameEn;
-    public String fullName;
-    public String fullNameEn;
-    public String codeName;
+    private String code;
+    private String name;
+    private String nameEn;
+    private String fullName;
+    private String fullNameEn;
+    private String codeName;
 
 
 }
