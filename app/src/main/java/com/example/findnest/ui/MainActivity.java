@@ -26,9 +26,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_search:
                     selectedFragment = new HomeFragment();
-
                     break;
-                case R.id.nav_profile:
+                case R.id.nav_account:
                     selectedFragment = new AccountFragment();
                     break;
             }

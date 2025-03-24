@@ -67,12 +67,12 @@ public class LoadingActivity extends AppCompatActivity {
             authService.refreshToken(tokenModel).enqueue(new Callback<TokenModel>() {
                 @Override
                 public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
-//                    Log.d("API_REQUEST", "URL: " + call.request().url());
-//                    Log.d("API_REQUEST", "Method: " + call.request().method());
-//                    Log.d("API_REQUEST", "Headers: " + call.request().headers().toString());
-//                    Log.d("API_REQUEST", "Body: " + new Gson().toJson(tokenModel));
-//                    Log.d("API_REQUEST", "Response: " + response.code());
-//                    Log.d("API_REQUEST", "Response: " + response.isSuccessful());
+                    Log.d("API_REQUEST", "URL: " + call.request().url());
+                    Log.d("API_REQUEST", "Method: " + call.request().method());
+                    Log.d("API_REQUEST", "Headers: " + call.request().headers().toString());
+                    Log.d("API_REQUEST", "Body: " + new Gson().toJson(tokenModel));
+                    Log.d("API_REQUEST", "Response: " + response.code());
+                    Log.d("API_REQUEST", "Response: " + response.isSuccessful());
                     if (response.isSuccessful()) {
                         TokenModel tokenResponse = response.body();
                         if (tokenResponse != null) {
