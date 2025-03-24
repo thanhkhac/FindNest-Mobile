@@ -14,15 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostDto {
-    public String id;
-    public String title;
+    private String id;
+    private String title;
     public BigDecimal price;
     public boolean isNegotiatedPrice;
     public String address;
     public int area;
     public String description;
-    public Double latitude;
-    public Double longitude;
+    private Double latitude;
+    private Double longitude;
     public String thumbnail;
     public boolean isHidden;
     public Boolean isApproved;
@@ -37,6 +37,4 @@ public class PostDto {
     public String panorama;
     public List<MediaDto> images;
     public UserForPublicDto createdUser;
-
-
 }

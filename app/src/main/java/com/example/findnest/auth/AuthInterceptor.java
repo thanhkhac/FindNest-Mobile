@@ -4,8 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.findnest.api.IAuthenticationService;
-import com.example.findnest.model.authentication.TokenModel;
+import com.example.findnest.api.IAuthenticationAPI;
+import com.example.findnest.model.response.authentication.TokenModel;
 
 import org.json.JSONObject;
 
@@ -28,7 +28,7 @@ public class AuthInterceptor implements Interceptor {
 //    private static final String BASE_URL = "https://10.0.2.2:7011/";
 
     private AuthManager _authManager;
-    private IAuthenticationService _authenticationService;
+    private IAuthenticationAPI _authenticationService;
 
     public AuthInterceptor(AuthManager authManager) {
         this._authManager = authManager;
@@ -38,7 +38,7 @@ public class AuthInterceptor implements Interceptor {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        _authenticationService = retrofit.create(IAuthenticationService.class);
+        _authenticationService = retrofit.create(IAuthenticationAPI.class);
     }
 
     @NonNull

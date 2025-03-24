@@ -65,6 +65,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <!-- Username -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fullname_input_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:hint="Họ và tên"
+            android:textColorHint="#AAA"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxStrokeColor="#DC3545"
+            app:endIconMode="clear_text"
+            app:hintTextColor="#DC3545"
+            app:layout_constraintTop_toBottomOf="@id/register_title">  <!-- Adds a clear (X) button -->
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fullname_input"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:textColor="#000"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <!-- Username -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/username_input_container"
@@ -83,7 +113,7 @@
             app:boxStrokeColor="#DC3545"
             app:endIconMode="clear_text"
             app:hintTextColor="#DC3545"
-            app:layout_constraintTop_toBottomOf="@id/register_title">  <!-- Adds a clear (X) button -->
+            app:layout_constraintTop_toBottomOf="@id/fullname_input_container">  <!-- Adds a clear (X) button -->
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username_input"

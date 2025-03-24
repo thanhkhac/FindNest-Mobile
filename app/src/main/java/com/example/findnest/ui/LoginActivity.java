@@ -11,11 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.findnest.R;
-import com.example.findnest.api.IAuthenticationService;
+import com.example.findnest.api.IAuthenticationAPI;
 import com.example.findnest.api.RetrofitClient;
 import com.example.findnest.auth.AuthManager;
-import com.example.findnest.model.authentication.LoginRequest;
-import com.example.findnest.model.authentication.TokenModel;
+import com.example.findnest.model.request.authentication.LoginRequest;
+import com.example.findnest.model.response.authentication.TokenModel;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView registerText;
 
     private AuthManager authManager;
-    private IAuthenticationService authService;
+    private IAuthenticationAPI authService;
 
 
     @Override
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //api
         authManager = new AuthManager(LoginActivity.this);
-        authService = RetrofitClient.getClient(authManager).create(IAuthenticationService.class);
+        authService = RetrofitClient.getClient(authManager).create(IAuthenticationAPI.class);
 
         // Ánh xạ các view
         usernameInput = findViewById(R.id.username_input);
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Intent it = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(it);
-
+                    
                 } else {
                     Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                 }

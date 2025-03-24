@@ -11,17 +11,12 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.findnest.R;
-import com.example.findnest.api.IAuthenticationService;
+import com.example.findnest.api.IAuthenticationAPI;
 import com.example.findnest.api.RetrofitClient;
 import com.example.findnest.auth.AuthManager;
-import com.example.findnest.model.authentication.TokenModel;
-import com.google.android.material.textview.MaterialTextView;
-import com.google.gson.Gson;
+import com.example.findnest.model.response.authentication.TokenModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +25,7 @@ import retrofit2.Response;
 public class LoadingActivity extends AppCompatActivity {
 
     private AuthManager authManager;
-    private IAuthenticationService authService;
+    private IAuthenticationAPI authService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +38,7 @@ public class LoadingActivity extends AppCompatActivity {
 
             //api
             authManager = new AuthManager(LoadingActivity.this);
-            authService = RetrofitClient.getClient(authManager).create(IAuthenticationService.class);
+            authService = RetrofitClient.getClient(authManager).create(IAuthenticationAPI.class);
 
             checkToken();
         } catch (Exception ex) {
@@ -70,12 +65,12 @@ public class LoadingActivity extends AppCompatActivity {
             authService.refreshToken(tokenModel).enqueue(new Callback<TokenModel>() {
                 @Override
                 public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
-                    Log.d("API_REQUEST", "URL: " + call.request().url());
-                    Log.d("API_REQUEST", "Method: " + call.request().method());
-                    Log.d("API_REQUEST", "Headers: " + call.request().headers().toString());
-                    Log.d("API_REQUEST", "Body: " + new Gson().toJson(tokenModel));
-                    Log.d("API_REQUEST", "Response: " + response.code());
-                    Log.d("API_REQUEST", "Response: " + response.isSuccessful());
+//                    Log.d("API_REQUEST", "URL: " + call.request().url());
+//                    Log.d("API_REQUEST", "Method: " + call.request().method());
+//                    Log.d("API_REQUEST", "Headers: " + call.request().headers().toString());
+//                    Log.d("API_REQUEST", "Body: " + new Gson().toJson(tokenModel));
+//                    Log.d("API_REQUEST", "Response: " + response.code());
+//                    Log.d("API_REQUEST", "Response: " + response.isSuccessful());
                     if (response.isSuccessful()) {
                         TokenModel tokenResponse = response.body();
                         if (tokenResponse != null) {

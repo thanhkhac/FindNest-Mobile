@@ -99,7 +99,7 @@ public class PostDetailFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     postDetail = response.body();
                     importData();
-                    loadMap(postDetail.latitude, postDetail.longitude);
+                    loadMap(postDetail.getLatitude(), postDetail.getLongitude());
                 } else {
 
                     Toast.makeText(getContext(), "Lỗi lấy dữ liệu!", Toast.LENGTH_SHORT).show();
