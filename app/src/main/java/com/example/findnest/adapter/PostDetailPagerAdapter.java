@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.findnest.ui.PostImageFragment;
-import com.example.findnest.ui.ThumbnailFragment;
+import com.example.findnest.ui.fragment.PostImageFragment;
+import com.example.findnest.ui.fragment.ThumbnailFragment;
 
 import java.util.List;
 

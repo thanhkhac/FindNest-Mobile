@@ -1,4 +1,4 @@
-package com.example.findnest.ui;
+package com.example.findnest.ui.fragment;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 

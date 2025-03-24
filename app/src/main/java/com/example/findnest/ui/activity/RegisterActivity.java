@@ -1,4 +1,4 @@
-package com.example.findnest.ui;
+package com.example.findnest.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;

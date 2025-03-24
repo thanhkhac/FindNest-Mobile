@@ -1,4 +1,4 @@
-package com.example.findnest.ui;
+package com.example.findnest.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.findnest.R;
 import com.example.findnest.api.IAuthenticationAPI;
-import com.example.findnest.api.RetrofitClient;
-import com.example.findnest.auth.AuthManager;
+import com.example.findnest.api.client.retrofit.RetrofitClient;
+import com.example.findnest.api.client.auth.AuthManager;
 import com.example.findnest.model.request.authentication.LoginRequest;
 import com.example.findnest.model.response.authentication.TokenModel;
 import com.google.gson.Gson;

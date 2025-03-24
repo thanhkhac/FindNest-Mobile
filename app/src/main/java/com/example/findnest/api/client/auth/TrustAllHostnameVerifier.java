@@ -1,4 +1,4 @@
-package com.example.findnest.api;
+package com.example.findnest.api.client.auth;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;

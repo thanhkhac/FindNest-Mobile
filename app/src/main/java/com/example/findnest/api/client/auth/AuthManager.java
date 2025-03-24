@@ -1,4 +1,4 @@
-package com.example.findnest.auth;
+package com.example.findnest.api.client.auth;
 
 import android.content.Context;
 import android.content.SharedPreferences;

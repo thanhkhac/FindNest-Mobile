@@ -1,4 +1,4 @@
-package com.example.findnest.api;
+package com.example.findnest.api.client.auth;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;

@@ -1,4 +1,4 @@
-package com.example.findnest.ui;
+package com.example.findnest.ui.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,15 +8,16 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.findnest.R;
 import com.example.findnest.api.ITestService;
 import com.example.findnest.api.RetrofitClient;
 import com.example.findnest.auth.AuthManager;
 import com.example.findnest.model.Plan;
+import com.example.findnest.api.ITestAPI;
+import com.example.findnest.api.client.retrofit.RetrofitClient;
+import com.example.findnest.api.client.auth.AuthManager;
+import com.example.findnest.model.response.plan.PlanDetailRes;
 import com.example.findnest.model.response.authentication.TokenModel;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     Button btn;
 
-    private ITestService testService;
+    private ITestAPI testService;
     private AuthManager authManager;
 
 
@@ -44,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
 
         authManager = new AuthManager(HomeActivity.this);
 
-        testService = RetrofitClient.getClient(authManager).create(ITestService.class);
+        testService = RetrofitClient.getClient(authManager).create(ITestAPI.class);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,9 +55,9 @@ public class HomeActivity extends AppCompatActivity {
                 token.setAccessToken(authManager.getAccessToken());
                 token.setRefreshToken(authManager.getRefreshToken());
 
-                testService.getPlan(token).enqueue(new Callback<List<Plan>>() {
+                testService.getPlan(token).enqueue(new Callback<List<PlanDetailRes>>() {
                     @Override
-                    public void onResponse(Call<List<Plan>> call, Response<List<Plan>> response) {
+                    public void onResponse(Call<List<PlanDetailRes>> call, Response<List<PlanDetailRes>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             Toast.makeText(HomeActivity.this, String.valueOf(response.body().size()), Toast.LENGTH_SHORT).show();
                         } else {
@@ -65,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<List<Plan>> call, Throwable t) {
+                    public void onFailure(Call<List<PlanDetailRes>> call, Throwable t) {
                         Toast.makeText(HomeActivity.this, "GetPlan Failed!", Toast.LENGTH_SHORT).show();
                         Log.e("GetPlanERROR", "GetPlan Failed!");
                     }

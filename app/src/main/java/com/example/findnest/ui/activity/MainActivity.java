@@ -1,4 +1,4 @@
-package com.example.findnest.ui;
+package com.example.findnest.ui.activity;
 
 import android.os.Bundle;
 
@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.findnest.R;
+import com.example.findnest.ui.fragment.AccountFragment;
+import com.example.findnest.ui.fragment.HomeFragment;
+import com.example.findnest.ui.fragment.PostDetailFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,6 +1,8 @@
-package com.example.findnest.api;
-import com.example.findnest.auth.AuthInterceptor;
-import com.example.findnest.auth.AuthManager;
+package com.example.findnest.api.client.retrofit;
+import com.example.findnest.api.client.auth.TrustAllCerts;
+import com.example.findnest.api.client.auth.TrustAllHostnameVerifier;
+import com.example.findnest.api.client.auth.AuthInterceptor;
+import com.example.findnest.api.client.auth.AuthManager;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -9,9 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 
 public class RetrofitClient {
     private static final String BASE_URL =  "https://thanhkhac.id.vn/";

@@ -28,7 +28,10 @@
 <!--            android:name=".ui.ProfileFragment"-->
 <!--            android:exported="false" />-->
         <activity
-            android:name=".ui.LoadingActivity"
+            android:name=".ui.activity.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,16 +40,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.HomeActivity"
+            android:name=".ui.activity.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.RegisterActivity"
+            android:name=".ui.activity.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="false" />
     </application>
 

@@ -1,4 +1,4 @@
-package com.example.findnest.ui;
+package com.example.findnest.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -22,10 +22,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.findnest.R;
 import com.example.findnest.adapter.PostDetailPagerAdapter;
-import com.example.findnest.api.IPostService;
-import com.example.findnest.auth.AuthManager;
-import com.example.findnest.model.dto.PostDto;
-import com.example.findnest.api.RetrofitClient;
+import com.example.findnest.api.IPostAPI;
+import com.example.findnest.api.client.auth.AuthManager;
+import com.example.findnest.model.response.post.PostDetailRes;
+import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -56,8 +56,8 @@ public class PostDetailFragment extends Fragment {
     public PostDetailPagerAdapter pagerAdapter;
     String thumbnailUrl = "";
     List<String> slideModels = new ArrayList<>();
-    PostDto postDetail;
-    private IPostService iPostService;
+    PostDetailRes postDetail;
+    private IPostAPI iPostService;
     public WebView mapWebView;
     private AuthManager authManager;
 
@@ -86,16 +86,16 @@ public class PostDetailFragment extends Fragment {
             return;
         }
         authManager = new AuthManager(getContext());
-        iPostService = RetrofitClient.getClient(authManager).create(IPostService.class);
-        iPostService.getPostDetail(postId).enqueue(new Callback<PostDto>() {
+        iPostService = RetrofitClient.getClient(authManager).create(IPostAPI.class);
+        iPostService.getPostDetail(postId).enqueue(new Callback<PostDetailRes>() {
             @Override
-            public void onFailure(Call<PostDto> call, Throwable t) {
+            public void onFailure(Call<PostDetailRes> call, Throwable t) {
                 Log.e("API_ERROR", t.getMessage());
                 Toast.makeText(getContext(), "Không thể kết nối!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onResponse(Call<PostDto> call, Response<PostDto> response) {
+            public void onResponse(Call<PostDetailRes> call, Response<PostDetailRes> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     postDetail = response.body();
                     importData();
@@ -130,11 +130,11 @@ public class PostDetailFragment extends Fragment {
         postTitle.setText(postDetail.getTitle());
         postAddress.setText(postDetail.getAddress());
         postRoom.setText(String.valueOf(postDetail.getBedRoomCount()));
-        postCreated.setText(postDetail.getCreatedUser().fullName + "  ");
+        postCreated.setText(postDetail.getCreatedUser().getFullName() + "  ");
         MoTa.setText(postDetail.getDescription());
         Price.setText(formattedPrice);
         postArea.setText(String.valueOf(postDetail.getArea())+ "m²" );
-        postCreatedPhone.setText(postDetail.getCreatedUser().contactPhoneNumber);
+        postCreatedPhone.setText(postDetail.getCreatedUser().getContactPhoneNumber());
         postBathroom.setText(String.valueOf(postDetail.getBathRoomCount()));
         thumbnailUrl = BASE_UPLOAD_URL + postDetail.getThumbnail();
 

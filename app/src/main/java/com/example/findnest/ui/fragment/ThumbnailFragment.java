@@ -1,4 +1,4 @@
-package com.example.findnest.ui;
+package com.example.findnest.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

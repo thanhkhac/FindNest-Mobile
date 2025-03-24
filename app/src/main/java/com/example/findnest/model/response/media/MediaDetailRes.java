@@ -1,4 +1,4 @@
-package com.example.findnest.model.dto;
+package com.example.findnest.model.response.media;
 
 import java.util.UUID;
 
@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MediaDto {
-    public UUID id;
-    public String path;
-    public int order;
-
-
+public class MediaDetailRes {
+    private UUID id;
+    private String path;
+    private int order;
 }
