@@ -1,13 +1,11 @@
 package com.example.findnest.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.findnest.R;
-import com.example.findnest.ui.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,10 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    selectedFragment = new HomeFragment();
-                    Intent intent = new Intent(MainActivity.this, PostDetailActivity.class);
-                    intent.putExtra("Id", "92017737-39e8-4f94-80cb-f4a6d2c44dcf");
-                    startActivity(intent);
+                    selectedFragment = PostDetailFragment.newInstance("92017737-39e8-4f94-80cb-f4a6d2c44dcf");
                     break;
                 case R.id.nav_search:
                     selectedFragment = new HomeFragment();

@@ -36,7 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PostDetailActivity" />
+        <activity android:name=".ui.PostDetailFragment" />
         <activity
             android:name=".ui.HomeActivity"
             android:exported="false" />
