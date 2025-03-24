@@ -10,10 +10,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.findnest.R;
-import com.example.findnest.api.ITestService;
-import com.example.findnest.api.RetrofitClient;
-import com.example.findnest.auth.AuthManager;
-import com.example.findnest.model.Plan;
 import com.example.findnest.api.ITestAPI;
 import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.api.client.auth.AuthManager;

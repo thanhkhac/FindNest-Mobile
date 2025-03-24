@@ -16,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.findnest.R;
 import com.example.findnest.api.IAuthenticationAPI;
-import com.example.findnest.api.RetrofitClient;
-import com.example.findnest.auth.AuthManager;
+import com.example.findnest.api.client.auth.AuthManager;
+import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.model.request.authentication.RegisterModel;
 import com.example.findnest.model.response.authentication.TokenModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

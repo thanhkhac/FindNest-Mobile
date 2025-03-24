@@ -1,7 +1,5 @@
 package com.example.findnest.ui.fragment;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +14,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.findnest.R;
-import com.example.findnest.auth.AuthManager;
+import com.example.findnest.api.client.auth.AuthManager;
+import com.example.findnest.ui.activity.LoginActivity;
 
 public class AccountFragment extends Fragment {
 
