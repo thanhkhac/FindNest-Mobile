@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface IPostService {
-    @GET("post/{id}")
+    @GET("api/post/{id}")
     Call<PostDto> getPostDetail (@Path("id") String postId);
 }

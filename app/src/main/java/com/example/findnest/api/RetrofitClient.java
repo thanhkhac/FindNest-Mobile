@@ -9,11 +9,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-
+import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 public class RetrofitClient {
-    private static final String BASE_URL =  "https://thanhkhac.id.vn/api/";
-    //    private static final String BASE_URL = "https://10.0.2.2:7011/";
+    private static final String BASE_URL =  "https://thanhkhac.id.vn/";
+//    private static final String BASE_URL = "https://10.0.2.2:7011/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient(AuthManager authManager) {
