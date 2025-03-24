@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
 }
-
 android {
     namespace = "com.example.findnest"
     compileSdk = 35
@@ -51,9 +50,13 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.lombok)
     implementation(libs.osmdroid)
-    annotationProcessor(libs.lombok)
     implementation(libs.play.services.location)
+    implementation(libs.imageslideshow)
+    implementation(libs.glide)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    annotationProcessor(libs.lombok)
+    annotationProcessor(libs.glide.compiler)
 }

@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme -->
-    <style name="Base.Theme.FindNest" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Màu của Status Bar -->
+    <style name="Base.Theme.FindNest" parent="Theme.Material3.Light.NoActionBar">        <!-- Màu của Status Bar -->
         <item name="android:statusBarColor">#dc3545</item>
         <!-- Màu chính của ứng dụng -->
         <item name="colorPrimary">#dc3545</item>
@@ -10,4 +9,5 @@
     </style>
 
     <style name="Theme.FindNest" parent="Base.Theme.FindNest" />
+
 </resources>
