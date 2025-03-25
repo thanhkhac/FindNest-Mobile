@@ -149,6 +149,7 @@
             android:weightSum="3">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_edit"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -161,6 +162,7 @@
                 app:strokeWidth="1dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_buy_plan"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -173,6 +175,7 @@
                 app:strokeWidth="1dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginHorizontal="5dp"

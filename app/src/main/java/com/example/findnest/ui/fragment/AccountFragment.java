@@ -47,8 +47,8 @@ public class AccountFragment extends Fragment {
     private final String ARGS_USER_FULLNAME = "fullName";
     private final String ARGS_USER_CONTACTPHONENUMBER = "contactPhoneNumber";
     private final String ARGS_USER_ZALO = "zalo";
-    private final String ARGS_IMAGE_URL = "imageUrl";
-    private final String ARGS_BALANCE = "balance";
+    private final String ARGS_USER_IMAGE_URL = "imageUrl";
+    private final String ARGS_USER_BALANCE = "balance";
     public final String BASE_UPLOAD_URL = "https://thanhkhac.id.vn";
 
     LinearLayout historyPayment;
@@ -93,7 +93,7 @@ public class AccountFragment extends Fragment {
                 bundle.putString(ARGS_USER_FULLNAME, user.getFullName() == null ? "" : user.getFullName());
                 bundle.putString(ARGS_USER_CONTACTPHONENUMBER, user.getContactPhoneNumber() == null ? "" : user.getContactPhoneNumber());
                 bundle.putString(ARGS_USER_ZALO, user.getZalo() == null ? "" : user.getZalo());
-                bundle.putString(ARGS_IMAGE_URL, imageUrl);
+                bundle.putString(ARGS_USER_IMAGE_URL, imageUrl);
 
                 //set arguments
                 profileFragment.setArguments(bundle);
@@ -113,7 +113,7 @@ public class AccountFragment extends Fragment {
 
                 //init bundle to pass data
                 Bundle bundle = new Bundle();
-                bundle.putString(ARGS_IMAGE_URL, imageUrl);
+                bundle.putString(ARGS_USER_IMAGE_URL, imageUrl);
 
                 //set arguments
                 changeAvatarFragment.setArguments(bundle);
@@ -130,10 +130,14 @@ public class AccountFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString(ARGS_USER_ID, user.getId());
             bundle.putString(ARGS_USER_FULLNAME, user.getFullName() == null ? "" : user.getFullName());
-            bundle.putString(ARGS_IMAGE_URL, imageUrl);
+            bundle.putString(ARGS_USER_IMAGE_URL, imageUrl);
+            bundle.putString(ARGS_USER_BALANCE, user.getBalance().toString());
+
+            MyPostFragment myPostFragment = new MyPostFragment();
+            myPostFragment.setArguments(bundle);
 
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_container, new MyPostFragment());
+            transaction.replace(R.id.frame_container, myPostFragment);
             transaction.addToBackStack(null); // Allows back navigation
             transaction.commit();
         });

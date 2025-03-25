@@ -43,33 +43,33 @@ public class HomeActivity extends AppCompatActivity {
 
         testService = RetrofitClient.getClient(authManager).create(ITestAPI.class);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TokenModel token = new TokenModel();
-
-                token.setAccessToken(authManager.getAccessToken());
-                token.setRefreshToken(authManager.getRefreshToken());
-
-                testService.getPlan(token).enqueue(new Callback<List<PlanDetailRes>>() {
-                    @Override
-                    public void onResponse(Call<List<PlanDetailRes>> call, Response<List<PlanDetailRes>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            Toast.makeText(HomeActivity.this, String.valueOf(response.body().size()), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(HomeActivity.this, "GetPlan Failed!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<PlanDetailRes>> call, Throwable t) {
-                        Toast.makeText(HomeActivity.this, "GetPlan Failed!", Toast.LENGTH_SHORT).show();
-                        Log.e("GetPlanERROR", "GetPlan Failed!");
-                    }
-                });
-
-            }
-        });
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TokenModel token = new TokenModel();
+//
+//                token.setAccessToken(authManager.getAccessToken());
+//                token.setRefreshToken(authManager.getRefreshToken());
+//
+//                testService.getPlan(token).enqueue(new Callback<List<PlanDetailRes>>() {
+//                    @Override
+//                    public void onResponse(Call<List<PlanDetailRes>> call, Response<List<PlanDetailRes>> response) {
+//                        if (response.isSuccessful() && response.body() != null) {
+//                            Toast.makeText(HomeActivity.this, String.valueOf(response.body().size()), Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(HomeActivity.this, "GetPlan Failed!", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<PlanDetailRes>> call, Throwable t) {
+//                        Toast.makeText(HomeActivity.this, "GetPlan Failed!", Toast.LENGTH_SHORT).show();
+//                        Log.e("GetPlanERROR", "GetPlan Failed!");
+//                    }
+//                });
+//
+//            }
+//        });
 
     }
 }

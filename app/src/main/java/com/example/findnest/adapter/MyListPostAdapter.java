@@ -4,26 +4,33 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.findnest.R;
+import com.example.findnest.api.IUserAPI;
+import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.model.Post;
-import com.google.android.material.card.MaterialCardView;
+import com.example.findnest.model.response.user_for_public.UserForPublicDetailRes;
+import com.example.findnest.ui.customEvents.OnMyPostButtonClickedListener;
+import com.example.findnest.ui.fragment.AccountFragment;
 
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
@@ -31,10 +38,16 @@ public class MyListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context _context;
     private List<Post> list_post;
     private boolean isLoadingAdded = false;
+    private OnMyPostButtonClickedListener listener;
 
-    public MyListPostAdapter(Context context, List<Post> postList) {
+    private final String BUTTON_TYPE_EDIT = "edit";
+    private final String BUTTON_TYPE_BUY_PLAN = "buyPlan";
+    private final String BUTTON_TYPE_DELETE = "delete";
+
+    public MyListPostAdapter(Context context, List<Post> postList, OnMyPostButtonClickedListener listener) {
         this._context = context;
         this.list_post = postList;
+        this.listener = listener;
     }
 
     // ViewHolder cho item bài đăng
@@ -42,6 +55,8 @@ public class MyListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TextView tvTitle, tvPriority, tvAddress, tvCost, tvArea;
         ImageView iv_thumbnail;
         CardView parentLayout;
+
+        Button btn_edit, btn_buy_plan, btn_delete;
 
         public MyListPostViewHolder(
                 @NonNull
@@ -54,6 +69,11 @@ public class MyListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tvArea = itemView.findViewById(R.id.tv_area);
             iv_thumbnail = itemView.findViewById(R.id.iv_thumbnail);
             parentLayout = itemView.findViewById(R.id.parentLayout);
+
+            btn_edit = itemView.findViewById(R.id.btn_edit);
+            btn_buy_plan = itemView.findViewById(R.id.btn_buy_plan);
+            btn_delete = itemView.findViewById(R.id.btn_delete);
+
         }
     }
 
@@ -90,6 +110,11 @@ public class MyListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             myPostHolder.tvAddress.setText(post.getRegionAddress());
             myPostHolder.tvCost.setText(String.format(Locale.getDefault(), "%,d", post.getPrice()) + " VND");
             myPostHolder.tvArea.setText(String.valueOf(post.getArea()) + " m²");
+
+            //
+            myPostHolder.btn_edit.setOnClickListener(v -> listener.onButtonClicked(position, BUTTON_TYPE_EDIT));
+            myPostHolder.btn_buy_plan.setOnClickListener(v -> listener.onButtonClicked(position, BUTTON_TYPE_BUY_PLAN));
+            myPostHolder.btn_delete.setOnClickListener(v -> listener.onButtonClicked(position, BUTTON_TYPE_DELETE));
 
 //             Cập nhật màu sắc dựa trên priority và ẩn nếu không hợp lệ
             if (post.getPlanPriority() == 1 || post.getPlanPriority() == 2 || post.getPlanPriority() == 3) {
