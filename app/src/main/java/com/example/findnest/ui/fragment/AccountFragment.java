@@ -62,6 +62,7 @@ public class AccountFragment extends Fragment {
         btn_go_to_change_avatar = view.findViewById(R.id.btn_go_to_change_avatar);
         btn_go_to_my_post = view.findViewById(R.id.btn_go_to_my_post);
         btnLogout = view.findViewById(R.id.logout_button);
+        historyPayment = view.findViewById(R.id.historyPayment);
 
         user_avatar = view.findViewById(R.id.user_avatar);
 
@@ -137,6 +138,15 @@ public class AccountFragment extends Fragment {
             transaction.commit();
         });
 
+        historyPayment.setOnClickListener(h -> {
+            Toast.makeText(getContext(), "Bạn đã nhấn vào payment", Toast.LENGTH_SHORT).show();
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .replace(AccountFragment.this.getId(), new PaymentFragment())
+                    .commit();
+        });
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,15 +193,9 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        historyPayment = view.findViewById(R.id.historyPayment);
-        historyPayment.setOnClickListener( h -> {
-            Toast.makeText(getContext(), "Bạn đã nhấn vào payment", Toast.LENGTH_SHORT).show();
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .addToBackStack(null)
-                    .replace(AccountFragment.this.getId(), new PaymentFragment())
-                    .commit();
-        });
+        Init(view);
+        InitEvent();
+        getInfo();
 
         return view;
     }
