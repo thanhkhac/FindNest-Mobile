@@ -19,6 +19,12 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        Fragment listPostFragment = new ListPostFragment();
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(HomeFragment.this.getId(), listPostFragment)
+                .addToBackStack(null)
+                .commit();
+        return view;
     }
 }

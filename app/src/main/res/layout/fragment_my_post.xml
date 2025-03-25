@@ -10,15 +10,13 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_back_to_account"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="15dp"
         android:backgroundTint="#FFF"
         android:gravity="center"
         android:paddingStart="-10dp"
-        android:text="Bài đăng của tôi"
         android:textColor="#DC3545"
         android:textSize="27sp"
         android:textStyle="bold"
-        app:icon="@drawable/icon_chevron_left"
         app:iconGravity="start"
         app:iconPadding="0dp"
         app:iconSize="50dp"
@@ -45,9 +43,10 @@
             android:background="#FFF"
             android:fontFamily="sans-serif-medium"
             android:paddingVertical="3dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
+            android:padding="5dp"
             android:text="Tim thấy 20 kết quả"
-            android:textSize="15dp" />
+            android:textSize="17dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list_post"

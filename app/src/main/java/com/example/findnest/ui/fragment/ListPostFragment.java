@@ -217,7 +217,7 @@ public class ListPostFragment extends Fragment {
         rv_list_post.setLayoutManager(layoutManager);
 
         postList = new ArrayList<>();
-        adapter = new ListPostAdapter(requireContext(), postList);
+        adapter = new ListPostAdapter(requireContext(), postList, ListPostFragment.this);
         rv_list_post.setAdapter(adapter);
 
         etSearch.setFocusable(false);
