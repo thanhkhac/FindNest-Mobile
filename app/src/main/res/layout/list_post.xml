@@ -35,7 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Bán Him BĐS ở đâu?"
+                android:hint="Bạn muốn tìm trọ?"
                 android:background="@null"
                 android:paddingStart="8dp"
                 android:textSize="16sp"

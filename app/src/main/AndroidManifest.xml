@@ -31,9 +31,6 @@
             android:name=".ui.activity.ResetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.ListPostActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.LoadingActivity"
             android:exported="false" />
         <activity

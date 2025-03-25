@@ -1,4 +1,4 @@
-package com.example.findnest.ui;
+package com.example.findnest.ui.fragment;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
@@ -26,11 +26,10 @@ import com.example.findnest.adapter.FilterAdapter;
 import com.example.findnest.adapter.ListPostAdapter;
 import com.example.findnest.api.IPostService;
 import com.example.findnest.api.IRegionService;
-import com.example.findnest.api.RetrofitClient;
-import com.example.findnest.model.DistrictDTO;
+import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.model.Post;
 import com.example.findnest.model.FilterRangeDTO;
-import com.example.findnest.model.ProvinceDTO;
+import com.example.findnest.model.responsedtos.RegionResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,8 +70,8 @@ public class ListPostFragment extends Fragment {
     private Double maxArea = null;
     private boolean isFirstLoad = true;
 
-    private List<ProvinceDTO> provinceList = new ArrayList<>();
-    private List<DistrictDTO> districtList = new ArrayList<>();
+    private List<RegionResponse> provinceList = new ArrayList<>();
+    private List<RegionResponse> districtList = new ArrayList<>();
 
     // Dữ liệu fix cứng cho các bộ lọc
     private final List<FilterRangeDTO> priceList = Arrays.asList(
@@ -281,11 +280,11 @@ public class ListPostFragment extends Fragment {
         FilterAdapter<T> filterAdapter = new FilterAdapter<>(requireContext(), options, displayTextExtractor, option -> {
             targetTextView.setText(displayTextExtractor.apply(option));
 
-            if (option instanceof ProvinceDTO) {
-                ProvinceDTO province = (ProvinceDTO) option;
-                selectedProvinceCode = String.format("%02d", province.getCode());
+            if (option instanceof RegionResponse && "Chọn tỉnh/thành phố".equals(title)) {
+                RegionResponse province = (RegionResponse) option;
+                selectedProvinceCode = province.getCode(); // Không format vì code là String
                 selectedProvinceName = province.getFullName();
-                Toast.makeText(requireContext(), "Province Code: " + selectedProvinceCode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Province: " + selectedProvinceName, Toast.LENGTH_SHORT).show();
                 // Reset district khi chọn lại tỉnh mới
                 selectedDistrictCode = null;
                 selectedDistrictName = null;
@@ -296,13 +295,14 @@ public class ListPostFragment extends Fragment {
                 currentPage = 1;
                 isLastPage = false;
                 fetchPosts(currentPage);
-                // Mở popup quận/huyện để người dùng có thể chọn tiếp
+                // Mở popup quận/huyện
+                filterPopup.dismiss(); // Đóng popup tỉnh trước khi mở popup quận
                 showDistrictPopup(selectedProvinceCode);
-            } else if (option instanceof DistrictDTO) {
-                DistrictDTO district = (DistrictDTO) option;
-                selectedDistrictCode = String.format("%03d", district.getCode());
+            } else if (option instanceof RegionResponse && "Chọn quận/huyện".equals(title)) {
+                RegionResponse district = (RegionResponse) option;
+                selectedDistrictCode = district.getCode(); // Không format vì code là String
                 selectedDistrictName = district.getFullName();
-                Toast.makeText(requireContext(), "District Code: " + selectedDistrictCode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "District: " + selectedDistrictName, Toast.LENGTH_SHORT).show();
                 if (selectedProvinceName != null && selectedDistrictName != null) {
                     etSearch.setText(selectedDistrictName + ", " + selectedProvinceName);
                 }
@@ -311,6 +311,7 @@ public class ListPostFragment extends Fragment {
                 currentPage = 1;
                 isLastPage = false;
                 fetchPosts(currentPage);
+                filterPopup.dismiss();
             } else if (option instanceof FilterRangeDTO) {
                 FilterRangeDTO range = (FilterRangeDTO) option;
                 if (targetTextView == tvPriceFilter) {
@@ -331,9 +332,8 @@ public class ListPostFragment extends Fragment {
                 currentPage = 1;
                 isLastPage = false;
                 fetchPosts(currentPage);
+                filterPopup.dismiss();
             }
-
-            filterPopup.dismiss();
         });
         rvFilterList.setAdapter(filterAdapter);
 
@@ -350,7 +350,6 @@ public class ListPostFragment extends Fragment {
         filterPopup.showAtLocation(anchorView, android.view.Gravity.BOTTOM, 0, 0);
 
         ivClosePopup.setOnClickListener(v -> filterPopup.dismiss());
-
         btnSearch.setOnClickListener(v -> filterPopup.dismiss());
 
         filterPopup.setOnDismissListener(() -> {
@@ -410,9 +409,9 @@ public class ListPostFragment extends Fragment {
     }
 
     private void showProvincePopup() {
-        regionService.getProvinces().enqueue(new Callback<List<ProvinceDTO>>() {
+        regionService.getProvinces().enqueue(new Callback<List<RegionResponse>>() {
             @Override
-            public void onResponse(Call<List<ProvinceDTO>> call, Response<List<ProvinceDTO>> response) {
+            public void onResponse(Call<List<RegionResponse>> call, Response<List<RegionResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     provinceList.clear();
                     provinceList.addAll(response.body());
@@ -420,7 +419,7 @@ public class ListPostFragment extends Fragment {
                             etSearch,
                             "Chọn tỉnh/thành phố",
                             provinceList,
-                            ProvinceDTO::getFullName,
+                            RegionResponse::getFullName,
                             etSearch
                     );
                 } else {
@@ -429,7 +428,7 @@ public class ListPostFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<ProvinceDTO>> call, Throwable t) {
+            public void onFailure(Call<List<RegionResponse>> call, Throwable t) {
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -437,9 +436,9 @@ public class ListPostFragment extends Fragment {
 
     private void showDistrictPopup(String provinceCode) {
         Log.d("DistrictPopup", "Fetching districts for provinceCode: " + provinceCode);
-        regionService.getDistricts(provinceCode).enqueue(new Callback<List<DistrictDTO>>() {
+        regionService.getDistricts(provinceCode).enqueue(new Callback<List<RegionResponse>>() {
             @Override
-            public void onResponse(Call<List<DistrictDTO>> call, Response<List<DistrictDTO>> response) {
+            public void onResponse(Call<List<RegionResponse>> call, Response<List<RegionResponse>> response) {
                 Log.d("DistrictPopup", "Response code: " + response.code());
                 Log.d("DistrictPopup", "Response body: " + (response.body() != null ? response.body().toString() : "null"));
                 Log.d("DistrictPopup", "Is successful: " + response.isSuccessful());
@@ -451,7 +450,7 @@ public class ListPostFragment extends Fragment {
                             etSearch,
                             "Chọn quận/huyện",
                             districtList,
-                            DistrictDTO::getFullName,
+                            RegionResponse::getFullName,
                             etSearch
                     );
                 } else {
@@ -461,7 +460,7 @@ public class ListPostFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<DistrictDTO>> call, Throwable t) {
+            public void onFailure(Call<List<RegionResponse>> call, Throwable t) {
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("DistrictPopup", "Failure: " + t.getMessage());
             }

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.findnest.R;
 import com.example.findnest.model.Post;
+import com.example.findnest.model.response.user_for_public.UserForPublicDetailRes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +27,7 @@ import java.util.Locale;
 public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_LOADING = 1;
-
+    private static final String BASE_UPLOAD_URL = "https://thanhkhac.id.vn";
     private Context _context;
     private List<Post> list_post;
     private boolean isLoadingAdded = false;
@@ -67,7 +68,16 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             postHolder.tvArea.setText(String.valueOf(post.getArea()) + " m²");
             postHolder.tvBedroom.setText(String.valueOf(post.getBedRoomCount()));
             postHolder.tvBathroom.setText(String.valueOf(post.getBathRoomCount()));
-            postHolder.tvOwner.setText(post.getCreatedBy());
+            postHolder.tvOwner.setText(post.getCreatedUser().getFullName()+"");
+
+            String avatarUrl = post.getCreatedUser().getAvatar();
+            if (avatarUrl != null && !avatarUrl.isEmpty()) {
+                Glide.with(_context)
+                        .load(BASE_UPLOAD_URL + avatarUrl) // Tải avatar từ URL
+                        .placeholder(R.drawable.icon_avatar) // Icon mặc định trong lúc tải
+                        .error(R.drawable.icon_avatar) // Icon mặc định nếu lỗi
+                        .into(postHolder.ivOwnerAvatar);
+            }
 
             // Định dạng ngày từ chuỗi
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
@@ -117,7 +127,7 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // Tải ảnh từ URL bằng Glide
 //            Log.d("Thumbnail URL", "URL: " + post.getThumbnail());
             Glide.with(holder.itemView.getContext())
-                    .load("https://thanhkhac.id.vn" + post.getThumbnail())
+                    .load(BASE_UPLOAD_URL        + post.getThumbnail())
                     .into(postHolder.imageView);
         }
     }
@@ -129,7 +139,7 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     // ViewHolder cho item bài đăng
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvPriority, tvAddress, tvCost, tvArea, tvBedroom, tvBathroom, tvOwner, tvCreatedAt;
-        ImageView imageView;
+        ImageView imageView, ivOwnerAvatar;
         LinearLayout parentLayout;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -144,6 +154,7 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvOwner = itemView.findViewById(R.id.tv_post_owner);
             tvCreatedAt = itemView.findViewById(R.id.tv_createdAt);
             imageView = itemView.findViewById(R.id.iv_thumbnail);
+            ivOwnerAvatar = itemView.findViewById(R.id.ivOwnerAvatar);
             parentLayout = itemView.findViewById(R.id.parentLayout);
         }
     }

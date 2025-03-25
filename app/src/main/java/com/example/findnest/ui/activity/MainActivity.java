@@ -11,6 +11,7 @@ import com.example.findnest.ui.CreatePostFragment;
 import com.example.findnest.ui.fragment.AccountFragment;
 import com.example.findnest.ui.fragment.CommentFragment;
 import com.example.findnest.ui.fragment.HomeFragment;
+import com.example.findnest.ui.fragment.ListPostFragment;
 import com.example.findnest.ui.fragment.PostDetailFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
