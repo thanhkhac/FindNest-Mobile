@@ -18,10 +18,15 @@ import com.example.findnest.R;
 import com.example.findnest.api.IAuthenticationAPI;
 import com.example.findnest.api.client.auth.AuthManager;
 import com.example.findnest.api.client.retrofit.RetrofitClient;
+import com.example.findnest.model.ErrorResponse;
 import com.example.findnest.model.request.authentication.RegisterModel;
 import com.example.findnest.model.response.authentication.TokenModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -108,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void regiter(RegisterModel request) {
-        Log.d("Register", "Request:  " + new Gson().toJson(request));
+        Log.d("Register", "Request: " + new Gson().toJson(request));
         authService.register(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -117,13 +122,44 @@ public class RegisterActivity extends AppCompatActivity {
                     Intent it = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(it);
                 } else {
-                    Log.d("Register_Response", new Gson().toJson(response.body()));
-                    Toast.makeText(RegisterActivity.this, response.code() + " - Đăng ký thất bại, Vui lòng thử lại với email khác", Toast.LENGTH_SHORT).show();
+                    try {
+                        // Ánh xạ lỗi từ response.errorBody() thành ErrorResponse
+                        String errorBody = response.errorBody().string();
+                        Gson gson = new Gson();
+                        ErrorResponse errorResponse = gson.fromJson(errorBody, ErrorResponse.class);
+
+                        if (errorResponse.getErrors() != null) {
+                            Map<String, List<String>> errors = errorResponse.getErrors();
+                            // Kiểm tra lỗi DuplicateEmail
+                            if (errors.containsKey("DuplicateEmail")) {
+                                Toast.makeText(RegisterActivity.this, "Email đã tồn tại", Toast.LENGTH_SHORT).show();
+                            }
+                            // Kiểm tra lỗi DuplicateUserName
+                            else if (errors.containsKey("DuplicateUserName")) {
+                                Toast.makeText(RegisterActivity.this, "Username đã tồn tại", Toast.LENGTH_SHORT).show();
+                            }
+                            // Nếu có cả hai lỗi
+                            else if (errors.containsKey("DuplicateEmail") && errors.containsKey("DuplicateUserName")) {
+                                Toast.makeText(RegisterActivity.this, "Email và Username đã tồn tại", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Hiển thị thông báo lỗi chung nếu không xác định được
+                                String message = errorResponse.getMessage() != null ? errorResponse.getMessage() : "Đăng ký thất bại";
+                                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            // Xử lý các mã lỗi khác
+                            Toast.makeText(RegisterActivity.this, response.code() + " - Đăng ký thất bại, Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Register", "Error: " + t.getMessage());
                 Toast.makeText(RegisterActivity.this, "Lỗi server, Vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
             }
         });
