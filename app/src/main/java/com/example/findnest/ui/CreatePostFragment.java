@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ import com.example.findnest.api.client.auth.AuthManager;
 import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.model.responsedtos.GeocodingResponse;
 import com.example.findnest.model.responsedtos.RegionResponse;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
@@ -79,6 +82,11 @@ public class CreatePostFragment extends Fragment {
     private MapView mapView;
     private Marker selectedMarker;
 
+    private ProgressBar progressBar;
+    private View overlay;
+
+    private FrameLayout loadingContainer;
+
     private GeocodingService geocodingService;
     private IPostService postService; // Thêm service cho API post
 
@@ -93,6 +101,10 @@ public class CreatePostFragment extends Fragment {
     private AuthManager authManager;
 
     private GeoPoint selectedLocation;
+
+    private Call<List<GeocodingResponse>> geocodingCall;
+
+//    private Call<Void> postCall;
 
     public CreatePostFragment() {
         // Required empty public constructor
@@ -145,6 +157,9 @@ public class CreatePostFragment extends Fragment {
         imgThumbnailPreview = view.findViewById(R.id.img_thumbnail_preview);
         recyclerImages = view.findViewById(R.id.recycler_images);
         mapView = view.findViewById(R.id.map_view);
+        progressBar = view.findViewById(R.id.progress_bar);
+        overlay = view.findViewById(R.id.overlay);
+        loadingContainer = view.findViewById(R.id.loading_container);
 
         // Thiết lập RecyclerView
         recyclerImages.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -181,9 +196,15 @@ public class CreatePostFragment extends Fragment {
         });
 
         checkPermissions();
-        updateMap("Hà Nội, Vietnam");
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Gọi updateMap sau khi view đã được tạo
+        updateMap("Hà Nội, Vietnam");
     }
 
     private void setupMap() {
@@ -208,6 +229,11 @@ public class CreatePostFragment extends Fragment {
     }
 
     private void addMarkerAtLocation(GeoPoint location) {
+        if (mapView == null) {
+            Log.w("CreatePostFragment", "MapView null");
+            return;
+        }
+
         if (selectedMarker != null) {
             if (selectedMarker.isInfoWindowShown()) {
                 selectedMarker.closeInfoWindow();
@@ -221,7 +247,6 @@ public class CreatePostFragment extends Fragment {
         selectedMarker.setTitle("Vị trí đã chọn");
         selectedMarker.setSnippet("Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
         selectedMarker.setInfoWindow(new org.osmdroid.views.overlay.infowindow.BasicInfoWindow(org.osmdroid.library.R.layout.bonuspack_bubble, mapView));
-
         selectedLocation = location;
 
         mapView.getOverlays().add(selectedMarker);
@@ -422,9 +447,23 @@ public class CreatePostFragment extends Fragment {
     }
 
     private void updateMap(String locationQuery) {
-        geocodingService.getCoordinates(locationQuery, "json", 1).enqueue(new Callback<List<GeocodingResponse>>() {
+        if (geocodingCall != null) {
+            geocodingCall.cancel();
+        }
+        showLoading(true);
+        geocodingCall = geocodingService.getCoordinates(locationQuery, "json", 1);
+        geocodingCall.enqueue(new Callback<List<GeocodingResponse>>() {
             @Override
             public void onResponse(Call<List<GeocodingResponse>> call, Response<List<GeocodingResponse>> response) {
+                showLoading(false);
+                if (call.isCanceled()) {
+                    Log.d("CreatePostFragment", "Geocoding call đã bị hủy, bỏ qua onResponse");
+                    return;
+                }
+                if (!isAdded() || getView() == null || mapView == null) {
+                    Log.w("CreatePostFragment", "Fragment không còn gắn hoặc view bị hủy, bỏ qua cập nhật bản đồ");
+                    return;
+                }
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                     GeoPoint location = response.body().get(0).toGeoPoint();
                     mapView.getController().setCenter(location);
@@ -437,8 +476,15 @@ public class CreatePostFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<GeocodingResponse>> call, Throwable t) {
-                Toast.makeText(getContext(), "Lỗi lấy tọa độ: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("ERROR", t.getMessage());
+                showLoading(false);
+                if (call.isCanceled()) {
+                    Log.d("CreatePostFragment", "Geocoding call đã bị hủy, bỏ qua onFailure");
+                    return;
+                }
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "Lỗi lấy tọa độ: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("ERROR", t.getMessage());
+                }
             }
         });
     }
@@ -510,6 +556,26 @@ public class CreatePostFragment extends Fragment {
         return uri.getPath();
     }
 
+    private void showLoading(boolean isLoading) {
+        if (isLoading) {
+            // Hiển thị toàn bộ loading_container
+            loadingContainer.setVisibility(View.VISIBLE);
+            getView().setEnabled(false); // Vô hiệu hóa giao diện fragment
+            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+            if (bottomNavigationView != null) {
+                bottomNavigationView.setEnabled(false); // Vô hiệu hóa navigation
+            }
+        } else {
+            // Ẩn toàn bộ loading_container
+            loadingContainer.setVisibility(View.GONE);
+            getView().setEnabled(true); // Khôi phục giao diện fragment
+            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+            if (bottomNavigationView != null) {
+                bottomNavigationView.setEnabled(true); // Khôi phục navigation
+            }
+        }
+    }
+
     private void submitPost() {
         String title = editTitle.getText().toString().trim();
         String priceStr = editPrice.getText().toString().trim();
@@ -529,6 +595,7 @@ public class CreatePostFragment extends Fragment {
             return;
         }
 
+        showLoading(true);
         // Chuyển đổi dữ liệu
         double price = isNegotiablePrice ? 0 : Double.parseDouble(priceStr);
         int area = Integer.parseInt(areaStr);
@@ -567,7 +634,6 @@ public class CreatePostFragment extends Fragment {
             MultipartBody.Part imagePart = MultipartBody.Part.createFormData("images[" + i + "].file", imageFile.getName(), imageBody);
             imageParts.add(imagePart);
         }
-
         // Gửi yêu cầu API
         Call<Void> call = postService.createPost(
                 titleBody, priceBody, isNegotiatedPriceBody, addressBody, areaBody, descriptionBody,
@@ -578,9 +644,10 @@ public class CreatePostFragment extends Fragment {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                showLoading(false);
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Đăng bài thành công", Toast.LENGTH_SHORT).show();
-                    resetForm();
+//                    resetForm();
                 } else {
                     try {
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có nội dung lỗi";
@@ -598,6 +665,7 @@ public class CreatePostFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                showLoading(false);
                 Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("ERROR", t.getMessage());
             }
