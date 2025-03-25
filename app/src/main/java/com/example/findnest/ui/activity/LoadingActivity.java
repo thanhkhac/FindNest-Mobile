@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
@@ -34,13 +35,14 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         try {
             Animate();
-            //refresh token - auto login
 
-            //api
-            authManager = new AuthManager(LoadingActivity.this);
-            authService = RetrofitClient.getClient(authManager).create(IAuthenticationAPI.class);
+            // Delay execution instead of blocking UI
+            new Handler().postDelayed(() -> {
+                authManager = new AuthManager(LoadingActivity.this);
+                authService = RetrofitClient.getClient(authManager).create(IAuthenticationAPI.class);
+                checkToken();
+            }, 2500); // Wait 2.5 seconds before checking the token
 
-            checkToken();
         } catch (Exception ex) {
             Log.e(TAG, "Error in onCreate: " + ex.getMessage(), ex);
             Toast.makeText(LoadingActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
@@ -52,10 +54,11 @@ public class LoadingActivity extends AppCompatActivity {
         String accessToken = authManager.getAccessToken();
         String refreshToken = authManager.getRefreshToken();
 
-        if ( accessToken == null || refreshToken == null || accessToken.isEmpty() || refreshToken.isEmpty()) {
+        if (accessToken == null || refreshToken == null || accessToken.isEmpty() || refreshToken.isEmpty()) {
             Intent it = new Intent(LoadingActivity.this, LoginActivity.class);
             startActivity(it);
             finish();
+            return;
         }
 
         TokenModel tokenModel = new TokenModel();
@@ -81,6 +84,8 @@ public class LoadingActivity extends AppCompatActivity {
 
                             Intent it = new Intent(LoadingActivity.this, MainActivity.class);
                             startActivity(it);
+                            finish();
+
                         } else {
                             Log.e("API_RESPONSE", "RefreshToken body is null!");
                         }
@@ -96,6 +101,7 @@ public class LoadingActivity extends AppCompatActivity {
                     Intent it = new Intent(LoadingActivity.this, LoginActivity.class);
                     startActivity(it);
                     finish();
+
                 }
             });
         } catch (Exception ex) {
