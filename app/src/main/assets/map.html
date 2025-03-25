@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map = L.map('map').setView([20.123065, 105.920618], 13); // Vị trí mặc định
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    var marker = L.marker([20.123065, 105.920618]).addTo(map)
+        .bindPopup('Vị trí mặc định')
+        .openPopup();
+
+    function updateMarker(lat, lon) {
+        console.log("Cập nhật vị trí: ", lat, lon);
+        map.setView([lat, lon], 13);
+        marker.setLatLng([lat, lon]).bindPopup('Vị trí nhà trọ').openPopup();
+    }
+</script>
+</body>
+</html>
