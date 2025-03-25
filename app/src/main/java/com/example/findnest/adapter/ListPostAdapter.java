@@ -115,7 +115,7 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             // Tải ảnh từ URL bằng Glide
-            Log.d("Thumbnail URL", "URL: " + post.getThumbnail());
+//            Log.d("Thumbnail URL", "URL: " + post.getThumbnail());
             Glide.with(holder.itemView.getContext())
                     .load("https://thanhkhac.id.vn" + post.getThumbnail())
                     .into(postHolder.imageView);

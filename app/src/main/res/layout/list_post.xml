@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="20dp">
+    android:layout_height="match_parent">
 
     <!-- Header Layout -->
     <LinearLayout
@@ -32,6 +31,7 @@
                 android:backgroundTint="#808080" />
 
             <EditText
+                android:id="@+id/et_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -137,13 +137,24 @@
             android:layout_height="wrap_content"
             android:text="kết quả"
             android:textSize="15dp"
-            android:paddingLeft="20dp"
+            android:padding="10dp"
             android:fontFamily="sans-serif-medium"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list_post"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_no_results"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Không tìm thấy"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>
