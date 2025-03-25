@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class AccountFragment extends Fragment {
     AuthManager authManager;
     Context context;
-    LinearLayout btn_go_to_profile, btn_go_to_change_password;
+    LinearLayout btn_go_to_profile, btn_go_to_change_password, btn_go_to_change_avatar;
     Button btnLogout;
     IUserAPI userAPI;
     TextView user_fullName, user_contactNumber;
@@ -56,17 +56,16 @@ public class AccountFragment extends Fragment {
         authManager = new AuthManager(context);
         btn_go_to_profile = view.findViewById(R.id.btn_go_to_profile);
         btn_go_to_change_password = view.findViewById(R.id.btn_go_to_change_password);
+        btn_go_to_change_avatar = view.findViewById(R.id.btn_go_to_change_avatar);
         btnLogout = view.findViewById(R.id.logout_button);
 
         user_avatar = view.findViewById(R.id.user_avatar);
 
         user_fullName = view.findViewById(R.id.user_fullName);
         user_contactNumber = view.findViewById(R.id.user_contactNumber);
-
-
     }
 
-    void InitEvent(){
+    void InitEvent() {
 
         btn_go_to_change_password.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +96,26 @@ public class AccountFragment extends Fragment {
                 //to fragment
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_container, profileFragment);
+                transaction.addToBackStack(null); // Allows back navigation
+                transaction.commit();
+            }
+        });
+
+        btn_go_to_change_avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeAvatarFragment changeAvatarFragment = new ChangeAvatarFragment();
+
+                //init bundle to pass data
+                Bundle bundle = new Bundle();
+                bundle.putString(ARGS_IMAGE_URL, imageUrl);
+
+                //set arguments
+                changeAvatarFragment.setArguments(bundle);
+
+                //to fragment
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_container, changeAvatarFragment);
                 transaction.addToBackStack(null); // Allows back navigation
                 transaction.commit();
             }

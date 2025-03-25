@@ -42,7 +42,7 @@
         android:translationY="-40dp"
         app:layout_constraintBottom_toTopOf="@+id/footer"
         app:layout_constraintTop_toBottomOf="@+id/header"
-        tools:layout_editor_absoluteX="53dp">
+        tools:layout_editor_absoluteX="0dp">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/body_info"
@@ -68,6 +68,7 @@
                     android:id="@+id/user_avatar"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/icon_avatar"
                     app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.LargeComponent" />
 
@@ -114,6 +115,7 @@
             app:strokeColor="#EEE">
 
             <LinearLayout
+                android:id="@+id/btn_go_to_change_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackgroundBorderless"
