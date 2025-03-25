@@ -15,7 +15,7 @@
             android:id="@+id/tvBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="250,000 VNĐ"
+            android:text="0 VNĐ"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:textSize="35sp"
@@ -55,7 +55,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_select_payment"
-                android:layout_width="180dp"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
                 android:text="Nạp tiền"
                 android:textColor="#dc3545"
@@ -74,18 +74,18 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStatics"
-                android:layout_width="180dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/border_payment"
                 android:text="Thống kê"
                 android:textColor="#dc3545"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:background="@drawable/border_payment"
-                app:cornerRadius="8dp"
                 app:backgroundTint="#FFFFFF"
+                app:cornerRadius="8dp"
                 app:strokeColor="#FFFFFF"
-                app:strokeWidth="2dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                app:strokeWidth="2dp" />
 
             <View
                 android:layout_width="8dp"
