@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.findnest.R;
 import com.example.findnest.adapter.ListPostAdapter;
 import com.example.findnest.api.IPostService;
-import com.example.findnest.api.RetrofitClient;
+import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.model.Post;
 
 import org.json.JSONException;
@@ -32,6 +32,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class ListPostFragment extends Fragment {
     private RecyclerView rv_list_post;
@@ -50,7 +51,13 @@ public class ListPostFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull
+            LayoutInflater inflater,
+            @Nullable
+            ViewGroup container,
+            @Nullable
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.list_post, container, false);
         init(view);
         postService = RetrofitClient.getClient(null).create(IPostService.class);
@@ -116,7 +123,9 @@ public class ListPostFragment extends Fragment {
         // điều chỉnh phần filter khi cuộn
         rv_list_post.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(
+                    @NonNull
+                    RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 // Điều chỉnh header và content khi cuộn
@@ -138,7 +147,8 @@ public class ListPostFragment extends Fragment {
 
     private void hideHeader() {
         if (headerLayout.getHeight() == 0 || contentLayout == null) return;
-        if (currentAnimator != null && currentAnimator.isRunning()) return; // Tránh chạy nhiều animator cùng lúc
+        if (currentAnimator != null && currentAnimator.isRunning())
+            return; // Tránh chạy nhiều animator cùng lúc
 
         currentAnimator = ValueAnimator.ofFloat(0, -headerLayout.getHeight());
         currentAnimator.setDuration(200);

@@ -20,7 +20,6 @@ import com.example.findnest.api.IUserAPI;
 import com.example.findnest.api.client.auth.AuthManager;
 import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.model.request.user.ChangePasswordReq;
-import com.example.findnest.model.request.user.UserContactInfoReq;
 import com.example.findnest.ui.activity.LoginActivity;
 
 import retrofit2.Call;

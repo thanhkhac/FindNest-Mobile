@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.example.findnest.R;
 import com.example.findnest.api.client.auth.AuthManager;
 import com.example.findnest.ui.CreatePostFragment;
+import com.example.findnest.ui.ListPostFragment;
 import com.example.findnest.ui.fragment.AccountFragment;
 import com.example.findnest.ui.fragment.CommentFragment;
 import com.example.findnest.ui.fragment.HomeFragment;
