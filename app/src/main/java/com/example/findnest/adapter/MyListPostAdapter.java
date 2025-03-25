@@ -96,6 +96,8 @@ public class MyListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+
+
     @Override
     public void onBindViewHolder(
             @NonNull
@@ -106,9 +108,10 @@ public class MyListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             MyListPostViewHolder myPostHolder = (MyListPostViewHolder) holder;
             // Gán dữ liệu từ đối tượng Post vào các View
             myPostHolder.tvTitle.setText(post.getTitle());
+            myPostHolder.tvPriority.setVisibility(View.VISIBLE); // Đảm bảo hiển thị trước
             myPostHolder.tvPriority.setText(String.format("VIP%d", post.getPlanPriority()));
             myPostHolder.tvAddress.setText(post.getRegionAddress());
-            myPostHolder.tvCost.setText(String.format(Locale.getDefault(), "%,d", post.getPrice()) + " VND");
+            myPostHolder.tvCost.setText(post.isNegotiatedPrice() ? "Thỏa thuận" : String.format(Locale.getDefault(), "%,d", post.getPrice()) + " VND");
             myPostHolder.tvArea.setText(String.valueOf(post.getArea()) + " m²");
 
             //

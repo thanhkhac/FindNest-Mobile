@@ -10,6 +10,7 @@ import java.util.UUID;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -59,6 +60,11 @@ public interface IPostService {
 
     @GET("api/post/{id}")
     Call<PostDetailResponse> getPost(
+            @Path("id")
+            UUID postId);
+
+    @DELETE("api/post/{id}")
+    Call<Void> deletePost(
             @Path("id")
             UUID postId);
 

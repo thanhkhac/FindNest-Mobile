@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
                     // selectedFragment = PostDetailFragment.newInstance("92017737-39e8-4f94-80cb-f4a6d2c44dcf");
                     break;
                 case R.id.nav_add:
-//                    selectedFragment = CreatePostFragment.newInstance(authManager);
-                    selectedFragment = UpdatePostFragment.newInstance(authManager, "4ed402dd-9c6f-4226-97b0-d16e63415a4a");
+                    selectedFragment = CreatePostFragment.newInstance(authManager);
+//                    selectedFragment = UpdatePostFragment.newInstance(authManager, "4ed402dd-9c6f-4226-97b0-d16e63415a4a");
                     break;
                 case R.id.nav_account:
                     selectedFragment = new AccountFragment();
