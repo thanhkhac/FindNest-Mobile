@@ -37,14 +37,24 @@ import com.example.findnest.model.response.post_plan.PostPlanRes;
 import com.example.findnest.model.response.transaction.PaymentQRRes;
 import com.example.findnest.model.response.transaction.PaymentRes;
 import com.example.findnest.model.response.transaction.TransactionHistoryRes;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,18 +75,23 @@ public class PaymentFragment extends Fragment {
     private ImageView imageQR;
     TextView txtConfirmQR;
     TextView txtBalance;
-
+    BarChart barChart;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
+        final Dialog dialog = new Dialog(getContext());
+        final Dialog dialogChart = new Dialog(getContext());
+        initDialog(dialog);
+        initDialogChart(dialogChart);
         init(view);
         fetchDataTransaction();
-        final Dialog dialog = new Dialog(getContext());
-        initDialog(dialog);
         btnSelectPayment.setOnClickListener(v -> {
             openPaymentDialog(Gravity.CENTER, dialog);
+        });
+        btnStatics.setOnClickListener(v -> {
+            openChartDialog(Gravity.CENTER, dialogChart);
         });
         return view;
     }
@@ -85,6 +100,34 @@ public class PaymentFragment extends Fragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_payment);
         txtBalance = dialog.findViewById(R.id.txtBalance);
+    }
+
+    void initDialogChart(Dialog dialog){
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_chart);
+        barChart = dialog.findViewById(R.id.barChart);
+    }
+
+    public void openChartDialog(int gravity, Dialog dialog){
+        Window window = dialog.getWindow();
+        if(window == null){
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+        if(Gravity.BOTTOM == gravity){
+            dialog.setCancelable(true);
+        }else {
+            dialog.setCancelable(false);
+        }
+        ImageButton btnClose = dialog.findViewById(R.id.btnCloseChart);
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
     }
     public void openPaymentDialog(int gravity, Dialog dialog){
         DecimalFormat formatter = new DecimalFormat("#,###");
@@ -142,6 +185,7 @@ public class PaymentFragment extends Fragment {
     }
     public void init(View view){
         btnSelectPayment = view.findViewById(R.id.btn_select_payment);
+        btnStatics = view.findViewById(R.id.btnStatics);
         btnStatics = view.findViewById(R.id.btnStatics);
         tvBalance = view.findViewById(R.id.tvBalance);
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -249,5 +293,62 @@ public class PaymentFragment extends Fragment {
         recyclerView.setAdapter(paymentAdapter);
         tvBalance.setText(formatter.format(total)+" VNĐ");
         txtBalance.setText("Số dư hiện tại\n"+formatter.format(total) + " VNĐ");
+        setupChart(paymentRes);
+    }
+
+    void setupChart(List<PaymentRes> paymentRes){
+        barChart.getAxisRight().setDrawLabels(false);
+
+        ArrayList<String> months = new ArrayList<>(Arrays.asList(
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"));
+
+        float[] totalNap = new float[12];
+        float[] totalMua = new float[12];
+
+        for (PaymentRes payment : paymentRes) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(payment.getDate());
+            int month = calendar.get(Calendar.MONTH);
+
+            if ("Nạp tiền".equalsIgnoreCase(payment.getAction())) {
+                totalNap[month] += payment.getPrice();
+            } else if ("Mua gói tin".equalsIgnoreCase(payment.getAction())) {
+                totalMua[month] += -payment.getPrice();
+            }
+        }
+
+        ArrayList<BarEntry> entriesNap = new ArrayList<>();
+        ArrayList<BarEntry> entriesMua = new ArrayList<>();
+
+        for (int i = 0; i < 12; i++) {
+            entriesNap.add(new BarEntry(i, totalNap[i])); // Dữ liệu Nạp
+            entriesMua.add(new BarEntry(i, totalMua[i])); // Dữ liệu Mua
+        }
+
+        // Tạo 2 dataset
+        BarDataSet dataSetNap = new BarDataSet(entriesNap, "Số tiền nạp");
+        dataSetNap.setColor(Color.BLUE);
+
+        BarDataSet dataSetMua = new BarDataSet(entriesMua, "Số tiền mua");
+        dataSetMua.setColor(Color.RED);
+
+        BarData barData = new BarData(dataSetNap, dataSetMua);
+        barData.setBarWidth(0.4f); // Độ rộng của cột
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(months));
+        xAxis.setGranularity(1f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setCenterAxisLabels(true);
+
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setAxisMinimum(0);
+
+        barChart.setData(barData);
+        barChart.groupBars(-0.5f, 0.2f, 0.05f);
+        barChart.getDescription().setEnabled(false);
+        barChart.invalidate();
     }
 }

@@ -12,6 +12,7 @@ osmdroid = "6.1.16"
 play-services-location = "21.0.1"
 imageslideshow = "0.1.2"
 glide = "4.16.0"
+mpandroidchart = "3.1.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -27,6 +28,8 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 imageslideshow = { group = "com.github.denzcoskun", name = "ImageSlideshow", version.ref = "imageslideshow" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
