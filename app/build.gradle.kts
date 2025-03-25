@@ -41,6 +41,10 @@ dependencies {
     //for ui
     implementation ("com.google.android.material:material:1.10.0")
 
+    //valid
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+
+
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
 
