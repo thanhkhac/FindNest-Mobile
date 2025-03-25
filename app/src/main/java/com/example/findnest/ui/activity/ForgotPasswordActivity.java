@@ -34,13 +34,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private TextView registerText, loginText;
     private Button btn_send_email;
     private AuthManager authManager;
-    private IUserAPI userAPI;
+    private IAuthenticationAPI userAPI;
 
     private final String PUT_EXTRA_EMAIL = "email";
 
     void Init() {
         authManager = new AuthManager(ForgotPasswordActivity.this);
-        userAPI = RetrofitClient.getClient(authManager).create(IUserAPI.class);
+        userAPI = RetrofitClient.getClient(authManager).create(IAuthenticationAPI.class);
 
         input_email = findViewById(R.id.input_email);
         btn_send_email = findViewById(R.id.btn_send_email);

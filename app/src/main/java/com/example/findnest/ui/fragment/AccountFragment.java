@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class AccountFragment extends Fragment {
     AuthManager authManager;
     Context context;
-    LinearLayout btn_go_to_profile, btn_go_to_change_password, btn_go_to_change_avatar;
+    LinearLayout btn_go_to_profile, btn_go_to_change_password, btn_go_to_change_avatar, btn_go_to_my_post;
     Button btnLogout;
     IUserAPI userAPI;
     TextView user_fullName, user_contactNumber;
@@ -57,6 +57,7 @@ public class AccountFragment extends Fragment {
         btn_go_to_profile = view.findViewById(R.id.btn_go_to_profile);
         btn_go_to_change_password = view.findViewById(R.id.btn_go_to_change_password);
         btn_go_to_change_avatar = view.findViewById(R.id.btn_go_to_change_avatar);
+        btn_go_to_my_post = view.findViewById(R.id.btn_go_to_my_post);
         btnLogout = view.findViewById(R.id.logout_button);
 
         user_avatar = view.findViewById(R.id.user_avatar);
@@ -119,6 +120,13 @@ public class AccountFragment extends Fragment {
                 transaction.addToBackStack(null); // Allows back navigation
                 transaction.commit();
             }
+        });
+
+        btn_go_to_my_post.setOnClickListener(v->{
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_container, new MyPostFragment());
+            transaction.addToBackStack(null); // Allows back navigation
+            transaction.commit();
         });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {

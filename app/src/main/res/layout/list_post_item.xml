@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parentLayout"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border_line"
+    android:layout_marginHorizontal="5dp"
     android:layout_marginTop="10dp"
-    >
+    android:background="@drawable/border_line"
+    android:orientation="vertical">
 
     <!--Image-->
     <ImageView
@@ -15,8 +15,8 @@
         android:layout_height="200dp"
         android:background="@drawable/border_bg"
         android:backgroundTint="#ccc"
-        android:scaleType="centerCrop"
-        android:clipToOutline="true"/>
+        android:clipToOutline="true"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,48 +30,54 @@
             android:layout_height="wrap_content"
             android:layout_weight="8"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_post_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nhà trọ Green house 1"
-                android:textStyle="bold"
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_star"/>
+                    android:layout_weight="7"
+                    android:background="@drawable/ic_star" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_star"/>
+                    android:layout_weight="7"
+                    android:background="@drawable/ic_star" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_star"/>
+                    android:layout_weight="7"
+                    android:background="@drawable/ic_star" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_star"/>
+                    android:layout_weight="7"
+                    android:background="@drawable/ic_star" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_star"/>
+                    android:layout_weight="7"
+                    android:background="@drawable/ic_star" />
             </LinearLayout>
 
         </LinearLayout>
@@ -82,37 +88,36 @@
             android:id="@+id/tv_post_priority"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="vip1"
-            android:textSize="15dp"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:paddingRight="5dp"
+            android:layout_weight="2"
             android:background="@drawable/border_bg"
             android:backgroundTint="#ff3300"
-            android:textColor="#ffffff"/>
+            android:gravity="center"
+            android:paddingRight="5dp"
+            android:text="vip1"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
 
     </LinearLayout>
-
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="5dp"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
+        android:orientation="horizontal">
 
         <!--Cost-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_vnd"
-            android:text="đ"
             android:layout_gravity="center"
+            android:layout_marginRight="1dp"
+            android:background="@drawable/ic_vnd"
             android:gravity="center"
-            android:textStyle="bold"
-            android:layout_marginRight="1dp"/>
+            android:text="đ"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_cost_value"
@@ -121,89 +126,88 @@
             android:layout_gravity="center"
             android:text="18.000.000 VND"
             android:textColor="#b30000"
-            android:textStyle="bold"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-<!--        filled dot-->
+        <!--        filled dot-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="•"
-            android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"/>
+            android:gravity="center"
+            android:text="•"
+            android:textSize="20sp" />
 
         <!--Area-->
         <TextView
             android:id="@+id/tv_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="18m2"
-            android:textSize="15sp"
-            android:textStyle="bold"
             android:textColor="#b30000"
-            android:layout_gravity="center"/>
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-<!--        filled dot-->
+        <!--        filled dot-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="•"
-            android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"/>
+            android:gravity="center"
+            android:text="•"
+            android:textSize="20sp" />
 
-<!--        bedroom-->
+        <!--        bedroom-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:textStyle="bold"
-            android:background="@drawable/ic_single_bed"
             android:layout_gravity="center"
-            android:textSize="15sp"/>
+            android:background="@drawable/ic_single_bed"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_bedroom_number_value"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:text="2"
             android:layout_gravity="center"
-            android:textSize="15sp"/>
+            android:text="2"
+            android:textSize="15sp" />
 
-<!--        filled dot-->
+        <!--        filled dot-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="•"
-            android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"/>
+            android:gravity="center"
+            android:text="•"
+            android:textSize="20sp" />
 
-<!--        bathroom-->
+        <!--        bathroom-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/ic_bathtub"
-            />
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_bath_num_value"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:text="1"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="15sp"/>
+            android:gravity="center"
+            android:text="1"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -213,27 +217,28 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:background="@drawable/ic_location"
             android:textSize="15dp"
-            android:background="@drawable/ic_location"/>
+            android:textStyle="bold" />
 
         <!--Address Value-->
         <TextView
             android:id="@+id/tv_address_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Xã Bình Yên, Huyện Thạch Thất, Thành phố Hà Nội"
-            android:textSize="15dp"
-            android:layout_gravity="center"/>
+            android:textSize="15dp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#ccc"/>
+        android:background="#ccc" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -245,28 +250,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/person_24px"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            android:background="@drawable/person_24px" />
 
         <!--Post owner-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_post_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hoang Nguyen"
-                android:textStyle="bold"
-                android:textSize="15dp"/>
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_createdAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2025-03-05"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    tools:context=".ui.fragment.MyPostFragment">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_back_to_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFF"
+        android:gravity="center"
+        android:paddingStart="-10dp"
+        android:text="Bài đăng của tôi"
+        android:textColor="#DC3545"
+        android:textSize="27sp"
+        android:textStyle="bold"
+        app:icon="@drawable/icon_chevron_left"
+        app:iconGravity="start"
+        app:iconPadding="0dp"
+        app:iconSize="50dp"
+        app:iconTint="#DC3545"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Content Layout -->
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:backgroundTint="#ccc"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_back_to_account">
+
+        <TextView
+            android:id="@+id/tv_num_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:fontFamily="sans-serif-medium"
+            android:paddingVertical="3dp"
+            android:paddingLeft="10dp"
+            android:text="Tim thấy 20 kết quả"
+            android:textSize="15dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#DDD" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
