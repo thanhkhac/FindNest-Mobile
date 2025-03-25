@@ -6,18 +6,15 @@
     android:padding="8dp"
     android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tv_filter_option"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="16sp"
-        android:textColor="#000000"/>
-
     <RadioButton
         android:id="@+id/rb_filter_option"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_filter_option"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="false"
-        android:visibility="invisible"/>
+        android:layout_marginStart="8dp"
+        android:textSize="16sp" />
 </LinearLayout>

@@ -69,10 +69,11 @@ public interface IPostService
             @Query("maxPrice") Double maxPrice,
             @Query("isNegotiatedPrice") Boolean isNegotiatedPrice,
             @Query("isAllPrice") Boolean isAllPrice,
-            @Query("minArea") Double minArea,
-            @Query("maxArea") Double maxArea,
+            @Query("minArea") Integer minArea,
+            @Query("maxArea") Integer maxArea,
             @Query("provinceCode") String provinceCode,
             @Query("districtCode") String districtCode,
+            @Query("wardCode") String wardCode,
             @Query("pageNumber") int page,
             @Query("pageSize") int size
     );

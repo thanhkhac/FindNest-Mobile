@@ -13,4 +13,5 @@ public class FilterRangeDTO {
     private String text;
     private Double minValue;
     private Double maxValue;
+    private Boolean isNegotiatedPrice;
 }

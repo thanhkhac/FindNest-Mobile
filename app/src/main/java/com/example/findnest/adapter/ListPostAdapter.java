@@ -62,27 +62,30 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             PostViewHolder postHolder = (PostViewHolder) holder;
             // Gán dữ liệu từ đối tượng Post vào các View
             postHolder.tvTitle.setText(post.getTitle());
+
+            // Đặt lại visibility của tvPriority trước khi gán dữ liệu
+            postHolder.tvPriority.setVisibility(View.VISIBLE); // Đảm bảo hiển thị trước
             postHolder.tvPriority.setText(String.format("VIP%d", post.getPlanPriority()));
+
             postHolder.tvAddress.setText(post.getRegionAddress());
-            postHolder.tvCost.setText(String.format(Locale.getDefault(), "%,d", post.getPrice()) + " VND");
+            postHolder.tvCost.setText(post.isNegotiatedPrice() ? "Thỏa thuận" : String.format(Locale.getDefault(), "%,d", post.getPrice()) + " VND");
             postHolder.tvArea.setText(String.valueOf(post.getArea()) + " m²");
             postHolder.tvBedroom.setText(String.valueOf(post.getBedRoomCount()));
             postHolder.tvBathroom.setText(String.valueOf(post.getBathRoomCount()));
-            postHolder.tvOwner.setText(post.getCreatedUser().getFullName()+"");
+            postHolder.tvOwner.setText(post.getCreatedUser().getFullName() + "");
 
             String avatarUrl = post.getCreatedUser().getAvatar();
             if (avatarUrl != null && !avatarUrl.isEmpty()) {
                 Glide.with(_context)
-                        .load(BASE_UPLOAD_URL + avatarUrl) // Tải avatar từ URL
-                        .placeholder(R.drawable.icon_avatar) // Icon mặc định trong lúc tải
-                        .error(R.drawable.icon_avatar) // Icon mặc định nếu lỗi
+                        .load(BASE_UPLOAD_URL + avatarUrl)
+                        .placeholder(R.drawable.icon_avatar)
+                        .error(R.drawable.icon_avatar)
                         .into(postHolder.ivOwnerAvatar);
             }
 
-            // Định dạng ngày từ chuỗi
+            // Định dạng ngày
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
             SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
             try {
                 if (post.getCreatedAt() != null && !post.getCreatedAt().isEmpty()) {
                     java.util.Date date = inputFormat.parse(post.getCreatedAt());
@@ -95,7 +98,7 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 postHolder.tvCreatedAt.setText("Lỗi định dạng ngày");
             }
 
-            // Cập nhật màu sắc dựa trên priority và ẩn nếu không hợp lệ
+            // Cập nhật màu sắc dựa trên priority
             if (post.getPlanPriority() == 1 || post.getPlanPriority() == 2 || post.getPlanPriority() == 3) {
                 int borderColor, priorityBgColor;
                 switch (post.getPlanPriority()) {
@@ -124,10 +127,9 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 postHolder.tvPriority.setVisibility(View.GONE);
             }
 
-            // Tải ảnh từ URL bằng Glide
-//            Log.d("Thumbnail URL", "URL: " + post.getThumbnail());
+            // Tải ảnh thumbnail
             Glide.with(holder.itemView.getContext())
-                    .load(BASE_UPLOAD_URL        + post.getThumbnail())
+                    .load(BASE_UPLOAD_URL + post.getThumbnail())
                     .into(postHolder.imageView);
         }
     }

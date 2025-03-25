@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,17 +47,21 @@ public class ListPostFragment extends Fragment {
     private RecyclerView rv_list_post;
     private TextView tv_num_result, tvPriceFilter, tvAreaFilter, tv_no_results;
     private EditText etSearch;
+    private ProgressBar progressBar;
+    private RelativeLayout loadingOverlay; // Thêm overlay
     private IRegionService regionService;
+    private IPostService postService;
     private String selectedProvinceCode = null;
+    private String selectedWardCode = null; // Thêm ward code
     private String selectedDistrictCode = null;
-    private String selectedProvinceName = null; // Thêm để lưu tên tỉnh
-    private String selectedDistrictName = null; // Thêm để lưu tên quận
+    private String selectedProvinceName = null;
+    private String selectedDistrictName = null;
+    private String selectedWardName = null; // Thêm ward name
 
     private LinearLayout headerLayout;
     private LinearLayout contentLayout;
     private ListPostAdapter adapter;
     private List<Post> postList;
-    private IPostService postService;
     private int currentPage = 1;
     private final int PAGE_SIZE = 10;
     private boolean isLoading = false;
@@ -66,34 +71,38 @@ public class ListPostFragment extends Fragment {
     private PopupWindow filterPopup;
     private Double minPrice = null;
     private Double maxPrice = null;
-    private Double minArea = null;
-    private Double maxArea = null;
+    private Boolean isNegotiatedPrice = null;
+    private Integer minArea = null; // Thay từ Double sang Integer
+    private Integer maxArea = null; // Thay từ Double sang Integer
     private boolean isFirstLoad = true;
 
     private List<RegionResponse> provinceList = new ArrayList<>();
     private List<RegionResponse> districtList = new ArrayList<>();
+    private List<RegionResponse> wardList = new ArrayList<>(); // Thêm danh sách ward
 
-    // Dữ liệu fix cứng cho các bộ lọc
+    // Bộ lọc giá với "Giá thỏa thuận"
     private final List<FilterRangeDTO> priceList = Arrays.asList(
-            new FilterRangeDTO("Tất cả khoảng giá", null, null),
-            new FilterRangeDTO("Dưới 1 triệu", 0.0, 1000000.0),
-            new FilterRangeDTO("Từ 1 - 2 triệu", 1000000.0, 2000000.0),
-            new FilterRangeDTO("Từ 2 - 3 triệu", 2000000.0, 3000000.0),
-            new FilterRangeDTO("Từ 3 - 5 triệu", 3000000.0, 5000000.0),
-            new FilterRangeDTO("Từ 5 - 7 triệu", 5000000.0, 7000000.0),
-            new FilterRangeDTO("Từ 7 - 10 triệu", 7000000.0, 10000000.0),
-            new FilterRangeDTO("Từ 10 - 15 triệu", 10000000.0, 15000000.0),
-            new FilterRangeDTO("Trên 15 triệu", 15000000.0, null)
+            new FilterRangeDTO("Tất cả khoảng giá", null, null, null),
+            new FilterRangeDTO("Giá thỏa thuận", null, null, true),
+            new FilterRangeDTO("Dưới 1 triệu", 0.0, 1000000.0, false),
+            new FilterRangeDTO("Từ 1 - 2 triệu", 1000000.0, 2000000.0, false),
+            new FilterRangeDTO("Từ 2 - 3 triệu", 2000000.0, 3000000.0, false),
+            new FilterRangeDTO("Từ 3 - 5 triệu", 3000000.0, 5000000.0, false),
+            new FilterRangeDTO("Từ 5 - 7 triệu", 5000000.0, 7000000.0, false),
+            new FilterRangeDTO("Từ 7 - 10 triệu", 7000000.0, 10000000.0, false),
+            new FilterRangeDTO("Từ 10 - 15 triệu", 10000000.0, 15000000.0, false),
+            new FilterRangeDTO("Trên 15 triệu", 15000000.0, null, false)
     );
 
+    // Bộ lọc diện tích
     private final List<FilterRangeDTO> areaList = Arrays.asList(
-            new FilterRangeDTO("Tất cả diện tích", null, null),
-            new FilterRangeDTO("Từ 10 - 20 m²", 10.0, 20.0),
-            new FilterRangeDTO("Từ 20 - 30 m²", 20.0, 30.0),
-            new FilterRangeDTO("Từ 30 - 50 m²", 30.0, 50.0),
-            new FilterRangeDTO("Từ 50 - 100 m²", 50.0, 100.0),
-            new FilterRangeDTO("Từ 100 - 200 m²", 100.0, 200.0),
-            new FilterRangeDTO("Từ 200 - 500 m²", 200.0, 500.0)
+            new FilterRangeDTO("Tất cả diện tích", null, null, null),
+            new FilterRangeDTO("Từ 10 - 20 m²", 10.0, 20.0, null),
+            new FilterRangeDTO("Từ 20 - 30 m²", 20.0, 30.0, null),
+            new FilterRangeDTO("Từ 30 - 50 m²", 30.0, 50.0, null),
+            new FilterRangeDTO("Từ 50 - 100 m²", 50.0, 100.0, null),
+            new FilterRangeDTO("Từ 100 - 200 m²", 100.0, 200.0, null),
+            new FilterRangeDTO("Từ 200 - 500 m²", 200.0, 500.0, null)
     );
 
     @Nullable
@@ -102,67 +111,47 @@ public class ListPostFragment extends Fragment {
         View view = inflater.inflate(R.layout.list_post, container, false);
         init(view);
         postService = RetrofitClient.getClient(null).create(IPostService.class);
+        regionService = RetrofitClient.getClient(null).create(IRegionService.class);
         fetchPosts(currentPage);
         return view;
     }
 
     private void fetchPosts(int page) {
-        if (isLoading) return;
+        if (isLoading || isLastPage) return;
         isLoading = true;
+        showLoading(true);
 
-        // Xóa danh sách cũ trước khi gọi API
         if (page == 1) {
             postList.clear();
             adapter.notifyDataSetChanged();
         }
 
-        // Kiểm tra xem có bộ lọc giá và diện tích được áp dụng hay không
-        boolean isPriceFilterApplied = minPrice != null && maxPrice != null;
-        boolean isAreaFilterApplied = minArea != null && maxArea != null;
-        boolean isBothFiltersApplied = isPriceFilterApplied && isAreaFilterApplied;
+        boolean isAllPrice = (minPrice == null && maxPrice == null && isNegotiatedPrice == null);
 
-        Call<List<Post>> call;
-        if (isFirstLoad) {
-            // Lần đầu tiên tải dữ liệu: Không áp dụng bộ lọc
-            call = postService.getPosts(
-                    null, // minPrice
-                    null, // maxPrice
-                    null, // isNegotiatedPrice
-                    null, // isAllPrice
-                    null, // minArea
-                    null, // maxArea
-                    null, // provinceCode
-                    null, // districtCode
-                    page, // pageNumber
-                    PAGE_SIZE // pageSize
-            );
-        } else {
-            // Xác định giá trị của isAllPrice dựa trên minPrice và maxPrice
-            boolean isAllPrice = (minPrice == null && maxPrice == null); // true nếu cả minPrice và maxPrice là null
 
-            // Sau khi người dùng chọn bộ lọc: Áp dụng các tham số bộ lọc
-            call = postService.getPosts(
-                    minPrice, // minPrice
-                    maxPrice, // maxPrice
-                    false,    // isNegotiatedPrice
-                    isAllPrice, // isAllPrice
-                    minArea,  // minArea
-                    maxArea,  // maxArea
-                    selectedProvinceCode, // provinceCode
-                    selectedDistrictCode, // districtCode
-                    page,     // pageNumber
-                    PAGE_SIZE // pageSize
-            );
-        }
+        Call<List<Post>> call = postService.getPosts(
+                minPrice,
+                maxPrice,
+                isNegotiatedPrice,
+                isAllPrice,
+                minArea,
+                maxArea,
+                selectedProvinceCode,
+                selectedDistrictCode,
+                selectedWardCode,
+                page,
+                PAGE_SIZE
+        );
 
         call.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 isLoading = false;
+                showLoading(false);
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Post> newPosts = response.body();
 
-                    // Total post
                     String paginationHeader = response.headers().get("x-pagination");
                     if (paginationHeader != null) {
                         try {
@@ -171,12 +160,13 @@ public class ListPostFragment extends Fragment {
                             tv_num_result.setText(totalCount + " kết quả");
                         } catch (JSONException e) {
                             Log.e("JSON_ERROR", "Lỗi parse JSON: " + e.getMessage());
+                            tv_num_result.setText("Lỗi đếm kết quả");
                         }
                     }
 
                     if (newPosts.isEmpty()) {
                         isLastPage = true;
-                        if (currentPage == 1 && (isBothFiltersApplied || selectedProvinceCode != null)) {
+                        if (page == 1) {
                             rv_list_post.setVisibility(View.GONE);
                             tv_no_results.setVisibility(View.VISIBLE);
                         }
@@ -184,17 +174,15 @@ public class ListPostFragment extends Fragment {
                         rv_list_post.setVisibility(View.VISIBLE);
                         tv_no_results.setVisibility(View.GONE);
                         postList.addAll(newPosts);
-                        adapter.notifyItemRangeInserted(postList.size(), newPosts.size());
+                        adapter.notifyItemRangeInserted(postList.size() - newPosts.size(), newPosts.size());
                         currentPage++;
                     }
                 } else {
-                    if (currentPage == 1 && (isBothFiltersApplied || selectedProvinceCode != null)) {
+                    if (page == 1) {
                         rv_list_post.setVisibility(View.GONE);
                         tv_no_results.setVisibility(View.VISIBLE);
-                    } else if (currentPage > 1) {
-                        Toast.makeText(requireContext(), "Không thể tải thêm dữ liệu", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(requireContext(), "Lỗi tải dữ liệu: " + (response != null ? response.code() : "Không có phản hồi"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Lỗi tải dữ liệu: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
                 isFirstLoad = false;
             }
@@ -202,11 +190,10 @@ public class ListPostFragment extends Fragment {
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 isLoading = false;
-                if (currentPage == 1 && (isBothFiltersApplied || selectedProvinceCode != null)) {
+                showLoading(false);
+                if (page == 1) {
                     rv_list_post.setVisibility(View.GONE);
                     tv_no_results.setVisibility(View.VISIBLE);
-                } else if (currentPage > 1) {
-                    Toast.makeText(requireContext(), "Không thể tải thêm dữ liệu", Toast.LENGTH_SHORT).show();
                 }
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 isFirstLoad = false;
@@ -223,6 +210,9 @@ public class ListPostFragment extends Fragment {
         tvPriceFilter = view.findViewById(R.id.tv_price_filter);
         tvAreaFilter = view.findViewById(R.id.tv_area_filter);
         etSearch = view.findViewById(R.id.et_search);
+        progressBar = view.findViewById(R.id.progress_bar);
+        loadingOverlay = view.findViewById(R.id.loading_overlay); // Khởi tạo overlay
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         rv_list_post.setLayoutManager(layoutManager);
 
@@ -230,33 +220,24 @@ public class ListPostFragment extends Fragment {
         adapter = new ListPostAdapter(requireContext(), postList);
         rv_list_post.setAdapter(adapter);
 
-        // Initialize services
-        postService = RetrofitClient.getClient(null).create(IPostService.class);
-        regionService = RetrofitClient.getClient(null).create(IRegionService.class);
-
-        // Set EditText click listener
-        etSearch.setFocusable(false); // Prevent keyboard
+        etSearch.setFocusable(false);
         etSearch.setClickable(true);
         etSearch.setOnClickListener(v -> showProvincePopup());
 
-        // Sự kiện nhấn cho các bộ lọc
         tvPriceFilter.setOnClickListener(v -> showFilterPopup(v, "Khoảng giá", priceList, FilterRangeDTO::getText, tvPriceFilter));
         tvAreaFilter.setOnClickListener(v -> showFilterPopup(v, "Diện tích", areaList, FilterRangeDTO::getText, tvAreaFilter));
 
-        // Điều chỉnh phần filter khi cuộn
         rv_list_post.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                // Điều chỉnh header và content khi cuộn
-                if (dy > 0 && !isHeaderHidden) { // Cuộn xuống và header chưa ẩn
+                if (dy > 0 && !isHeaderHidden) {
                     hideHeader();
-                } else if (dy < 0 && isHeaderHidden) { // Cuộn lên và header đang ẩn
+                } else if (dy < 0 && isHeaderHidden) {
                     showHeader();
                 }
 
-                // Load more
                 int totalItemCount = layoutManager.getItemCount();
                 int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
                 if (!isLoading && !isLastPage && lastVisibleItemPosition + 1 >= totalItemCount) {
@@ -264,6 +245,11 @@ public class ListPostFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void showLoading(boolean show) {
+        loadingOverlay.setVisibility(show ? View.VISIBLE : View.GONE);
+        // Không cần vô hiệu hóa rv_list_post nữa vì overlay đã chặn tương tác
     }
 
     private <T> void showFilterPopup(View anchorView, String title, List<T> options, java.util.function.Function<T, String> displayTextExtractor, TextView targetTextView) {
@@ -282,50 +268,58 @@ public class ListPostFragment extends Fragment {
 
             if (option instanceof RegionResponse && "Chọn tỉnh/thành phố".equals(title)) {
                 RegionResponse province = (RegionResponse) option;
-                selectedProvinceCode = province.getCode(); // Không format vì code là String
+                selectedProvinceCode = province.getCode();
                 selectedProvinceName = province.getFullName();
-                Toast.makeText(requireContext(), "Province: " + selectedProvinceName, Toast.LENGTH_SHORT).show();
-                // Reset district khi chọn lại tỉnh mới
                 selectedDistrictCode = null;
                 selectedDistrictName = null;
-                etSearch.setText(selectedProvinceName); // Hiển thị chỉ tên tỉnh trong EditText
-                // Tải bài đăng ngay sau khi chọn tỉnh
-                postList.clear();
-                adapter.notifyDataSetChanged();
-                currentPage = 1;
-                isLastPage = false;
-                fetchPosts(currentPage);
-                // Mở popup quận/huyện
-                filterPopup.dismiss(); // Đóng popup tỉnh trước khi mở popup quận
-                showDistrictPopup(selectedProvinceCode);
-            } else if (option instanceof RegionResponse && "Chọn quận/huyện".equals(title)) {
-                RegionResponse district = (RegionResponse) option;
-                selectedDistrictCode = district.getCode(); // Không format vì code là String
-                selectedDistrictName = district.getFullName();
-                Toast.makeText(requireContext(), "District: " + selectedDistrictName, Toast.LENGTH_SHORT).show();
-                if (selectedProvinceName != null && selectedDistrictName != null) {
-                    etSearch.setText(selectedDistrictName + ", " + selectedProvinceName);
-                }
+                selectedWardCode = null; // Reset ward
+                selectedWardName = null; // Reset ward
+                etSearch.setText(selectedProvinceName);
                 postList.clear();
                 adapter.notifyDataSetChanged();
                 currentPage = 1;
                 isLastPage = false;
                 fetchPosts(currentPage);
                 filterPopup.dismiss();
+                if (selectedProvinceCode != null && !selectedProvinceCode.isEmpty()) {
+                    showDistrictPopup(selectedProvinceCode);
+                }
+            } else if (option instanceof RegionResponse && "Chọn quận/huyện".equals(title)) {
+                RegionResponse district = (RegionResponse) option;
+                selectedDistrictCode = district.getCode();
+                selectedDistrictName = district.getFullName();
+                selectedWardCode = null; // Reset ward
+                selectedWardName = null; // Reset ward
+                etSearch.setText(selectedDistrictName + ", " + selectedProvinceName);
+                postList.clear();
+                adapter.notifyDataSetChanged();
+                currentPage = 1;
+                isLastPage = false;
+                fetchPosts(currentPage);
+                filterPopup.dismiss();
+                if (selectedDistrictCode != null && !selectedDistrictCode.isEmpty()) {
+                    showWardPopup(selectedDistrictCode);
+                }
+            } else if (option instanceof RegionResponse && "Chọn phường/xã".equals(title)) {
+                RegionResponse ward = (RegionResponse) option;
+                selectedWardCode = ward.getCode();
+                selectedWardName = ward.getFullName();
+                etSearch.setText(selectedWardName + ", " + selectedDistrictName + ", " + selectedProvinceName);
+                postList.clear();
+                adapter.notifyDataSetChanged();
+                currentPage = 1;
+                isLastPage = false;
+                fetchPosts(currentPage); // Gọi lại fetchPosts với wardCode nếu API hỗ trợ
+                filterPopup.dismiss();
             } else if (option instanceof FilterRangeDTO) {
                 FilterRangeDTO range = (FilterRangeDTO) option;
                 if (targetTextView == tvPriceFilter) {
                     minPrice = range.getMinValue();
                     maxPrice = range.getMaxValue();
-                    if (range.getText().equals("Tất cả khoảng giá")) {
-                        isFirstLoad = true;
-                    }
+                    isNegotiatedPrice = range.getIsNegotiatedPrice();
                 } else if (targetTextView == tvAreaFilter) {
-                    minArea = range.getMinValue();
-                    maxArea = range.getMaxValue();
-                    if (range.getText().equals("Tất cả diện tích")) {
-                        isFirstLoad = true;
-                    }
+                    minArea = range.getMinValue() != null ? range.getMinValue().intValue() : null;
+                    maxArea = range.getMaxValue() != null ? range.getMaxValue().intValue() : null;
                 }
                 postList.clear();
                 adapter.notifyDataSetChanged();
@@ -409,9 +403,11 @@ public class ListPostFragment extends Fragment {
     }
 
     private void showProvincePopup() {
+        showLoading(true); // Hiển thị loading khi gọi API
         regionService.getProvinces().enqueue(new Callback<List<RegionResponse>>() {
             @Override
             public void onResponse(Call<List<RegionResponse>> call, Response<List<RegionResponse>> response) {
+                showLoading(false); // Ẩn loading sau khi nhận phản hồi
                 if (response.isSuccessful() && response.body() != null) {
                     provinceList.clear();
                     provinceList.addAll(response.body());
@@ -429,23 +425,21 @@ public class ListPostFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RegionResponse>> call, Throwable t) {
+                showLoading(false); // Ẩn loading nếu lỗi
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void showDistrictPopup(String provinceCode) {
-        Log.d("DistrictPopup", "Fetching districts for provinceCode: " + provinceCode);
+        showLoading(true); // Hiển thị loading khi gọi API
         regionService.getDistricts(provinceCode).enqueue(new Callback<List<RegionResponse>>() {
             @Override
             public void onResponse(Call<List<RegionResponse>> call, Response<List<RegionResponse>> response) {
-                Log.d("DistrictPopup", "Response code: " + response.code());
-                Log.d("DistrictPopup", "Response body: " + (response.body() != null ? response.body().toString() : "null"));
-                Log.d("DistrictPopup", "Is successful: " + response.isSuccessful());
+                showLoading(false); // Ẩn loading sau khi nhận phản hồi
                 if (response.isSuccessful() && response.body() != null) {
                     districtList.clear();
                     districtList.addAll(response.body());
-                    Log.d("DistrictPopup", "District list size: " + districtList.size());
                     showFilterPopup(
                             etSearch,
                             "Chọn quận/huyện",
@@ -455,14 +449,42 @@ public class ListPostFragment extends Fragment {
                     );
                 } else {
                     Toast.makeText(requireContext(), "Không thể tải danh sách quận/huyện", Toast.LENGTH_SHORT).show();
-                    Log.e("DistrictPopup", "Error: Response not successful or body is null");
                 }
             }
 
             @Override
             public void onFailure(Call<List<RegionResponse>> call, Throwable t) {
+                showLoading(false); // Ẩn loading nếu lỗi
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("DistrictPopup", "Failure: " + t.getMessage());
+            }
+        });
+    }
+
+    private void showWardPopup(String districtCode) {
+        showLoading(true);
+        regionService.getWards(districtCode).enqueue(new Callback<List<RegionResponse>>() {
+            @Override
+            public void onResponse(Call<List<RegionResponse>> call, Response<List<RegionResponse>> response) {
+                showLoading(false);
+                if (response.isSuccessful() && response.body() != null) {
+                    wardList.clear();
+                    wardList.addAll(response.body());
+                    showFilterPopup(
+                            etSearch,
+                            "Chọn phường/xã",
+                            wardList,
+                            RegionResponse::getFullName,
+                            etSearch
+                    );
+                } else {
+                    Toast.makeText(requireContext(), "Không thể tải danh sách phường/xã", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RegionResponse>> call, Throwable t) {
+                showLoading(false);
+                Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.example.findnest.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +39,19 @@ public class FilterAdapter<T> extends RecyclerView.Adapter<FilterAdapter.FilterV
 
     @Override
     public void onBindViewHolder(@NonNull FilterViewHolder holder, int position) {
-        T option = optionList.get(holder.getAdapterPosition());
-        holder.tvOption.setText(displayTextExtractor.apply(option));
-        holder.rbOption.setChecked(holder.getAdapterPosition() == selectedPosition);
+        T option = optionList.get(position);
+        String displayText = displayTextExtractor.apply(option);
+        holder.tvOption.setText(displayText != null ? displayText : "Không xác định");
+        holder.rbOption.setChecked(position == selectedPosition);
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.rbOption.setOnClickListener(v -> {
+            int previousPosition = selectedPosition;
             selectedPosition = holder.getAdapterPosition();
-            notifyDataSetChanged();
+            Log.d("FilterAdapter", "Đã chọn: " + displayText + " tại vị trí: " + selectedPosition);
+            if (previousPosition != selectedPosition) {
+                notifyItemChanged(previousPosition); // Cập nhật item trước đó
+                notifyItemChanged(selectedPosition); // Cập nhật item hiện tại
+            }
             listener.onOptionSelected(option);
         });
     }
