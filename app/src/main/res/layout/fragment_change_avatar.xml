@@ -4,37 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.ChangeAvatarFragment">
+    tools:context=".ui.fragment.ChangeAvatarFragment"
+    android:layout_gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_back_to_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FFF"
-            android:gravity="center"
-            android:paddingStart="-10dp"
-            android:text="Thay đổi ảnh đại điện"
-            android:textColor="#DC3545"
-            android:textSize="27sp"
-            android:textStyle="bold"
-            app:icon="@drawable/icon_chevron_left"
-            app:iconGravity="start"
-            app:iconPadding="0dp"
-            app:iconSize="50dp"
-            app:iconTint="#DC3545" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btn_back_to_account"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="#FFF"-->
+<!--            android:gravity="center"-->
+<!--            android:paddingStart="-10dp"-->
+<!--            android:text="Thay đổi ảnh đại điện"-->
+<!--            android:textColor="#DC3545"-->
+<!--            android:textSize="27sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:icon="@drawable/icon_chevron_left"-->
+<!--            app:iconGravity="start"-->
+<!--            app:iconPadding="0dp"-->
+<!--            app:iconSize="50dp"-->
+<!--            app:iconTint="#DC3545" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="80dp"
             android:layout_weight="1"
             android:orientation="vertical">
 

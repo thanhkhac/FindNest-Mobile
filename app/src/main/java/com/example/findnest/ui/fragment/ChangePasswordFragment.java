@@ -30,7 +30,7 @@ public class ChangePasswordFragment extends Fragment {
 
 
     EditText edtCurrentPassword, edtNewPassword, edtNewPasswordConfirmation;
-    Button btnSaveChange, btn_back_to_account;
+    Button btnSaveChange;// btn_back_to_account;
     AuthManager authManager;
     IUserAPI userAPI;
     Context context;
@@ -41,20 +41,20 @@ public class ChangePasswordFragment extends Fragment {
         edtNewPasswordConfirmation = view.findViewById(R.id.edtNewPasswordConfirmation);
 
         btnSaveChange = view.findViewById(R.id.btnSaveChange);
-        btn_back_to_account = view.findViewById(R.id.btn_back_to_account);
+//        btn_back_to_account = view.findViewById(R.id.btn_back_to_account);
 
         context = requireContext();
     }
 
     void InitEvents() {
-        btn_back_to_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_container, new AccountFragment());
-                transaction.commit();
-            }
-        });
+//        btn_back_to_account.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+//                transaction.replace(R.id.frame_container, new AccountFragment());
+//                transaction.commit();
+//            }
+//        });
 
         btnSaveChange.setOnClickListener(new View.OnClickListener() {
             @Override
