@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp">
+
+    <!-- Header Layout -->
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#ccc">
+
+        <!-- Search -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/border_line"
+            android:backgroundTint="@color/white"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_search"
+                android:backgroundTint="#808080" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Bán Him BĐS ở đâu?"
+                android:background="@null"
+                android:paddingStart="8dp"
+                android:textSize="16sp"
+                android:textColorHint="#808080" />
+        </LinearLayout>
+
+        <!-- Filter -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:scrollbars="none">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_price_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khoảng giá"
+                    android:drawableEnd="@drawable/arrow_down"
+                    android:drawableTint="#808080"
+                    android:padding="8dp"
+                    android:background="@drawable/border_line"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tv_area_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Diện tích"
+                    android:drawableEnd="@drawable/arrow_down"
+                    android:drawableTint="#808080"
+                    android:padding="8dp"
+                    android:background="@drawable/border_line"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"
+                    android:textColor="#000000" />
+
+                <!-- Ví dụ thêm các mục để kiểm tra cuộn ngang -->
+                <TextView
+                    android:id="@+id/tv_location_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vị trí"
+                    android:drawableEnd="@drawable/arrow_down"
+                    android:drawableTint="#808080"
+                    android:padding="8dp"
+                    android:background="@drawable/border_line"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tv_direction_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hướng nhà"
+                    android:drawableEnd="@drawable/arrow_down"
+                    android:drawableTint="#808080"
+                    android:padding="8dp"
+                    android:background="@drawable/border_line"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"
+                    android:textColor="#000000" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+    <!-- Content Layout -->
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header_layout"
+        android:orientation="vertical"
+        android:backgroundTint="#ccc">
+
+        <TextView
+            android:id="@+id/tv_num_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="kết quả"
+            android:textSize="15dp"
+            android:paddingLeft="20dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+</RelativeLayout>

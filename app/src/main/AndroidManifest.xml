@@ -35,6 +35,10 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.LoadingActivity"
+            android:name=".ui.ListPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

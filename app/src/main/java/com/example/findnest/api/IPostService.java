@@ -62,5 +62,11 @@ public interface IPostService
     @GET("api/post/{id}")
     Call<PostDetailResponse> getPost(@Path("id") UUID postId);
 
-
+        @GET("api/post")
+        Call<List<Post>> getPosts(
+                @Query("pageNumber") int page,
+                @Query("pageSize") int size
+        );
 }
+
+

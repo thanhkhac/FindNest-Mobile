@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    selectedFragment = PostDetailFragment.newInstance("92017737-39e8-4f94-80cb-f4a6d2c44dcf");
+                    //selectedFragment = PostDetailFragment.newInstance("92017737-39e8-4f94-80cb-f4a6d2c44dcf");
+                    selectedFragment = new ListPostFragment();
                     break;
                 case R.id.nav_add:
                     selectedFragment = CreatePostFragment.newInstance(authManager);
