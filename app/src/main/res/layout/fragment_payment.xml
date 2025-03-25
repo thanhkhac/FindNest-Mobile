@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f65867">
+
+    <!-- Phần hiển thị số dư tài khoản -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 VNĐ"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:paddingBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_remove_red_eye_24"
+                android:background="#f65867"/>
+            <TextView
+                android:id="@+id/tvBalanceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Balance"
+                android:textSize="18sp"
+                android:layout_marginLeft="5dp"
+                android:textColor="#FFFF"/>
+        </LinearLayout>
+
+
+        <!-- Hàng nút chức năng -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp"
+            android:gravity="center"
+            android:paddingTop="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_select_payment"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:text="Nạp tiền"
+                android:textColor="#dc3545"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:background="@drawable/border_payment"
+                app:cornerRadius="8dp"
+                app:backgroundTint="#FFFFFF"
+                app:strokeColor="#FFFFFF"
+                app:strokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStatics"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_payment"
+                android:text="Thống kê"
+                android:textColor="#dc3545"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:backgroundTint="#FFFFFF"
+                app:cornerRadius="8dp"
+                app:strokeColor="#FFFFFF"
+                app:strokeWidth="2dp" />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_top"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="15dp"
+            android:textColor="#000000"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"/>
+
+        <!-- Danh sách giao dịch -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:padding="8dp"/>
+    </LinearLayout>
+
+    <!-- Tiêu đề danh sách giao dịch -->
+
+
+</LinearLayout>

@@ -41,7 +41,6 @@ import com.example.findnest.model.responsedtos.PostDetailResponse;
 import com.example.findnest.model.responsedtos.RegionResponse;
 import com.example.findnest.ui.activity.MainActivity;
 import com.example.findnest.ui.fragment.PostDetailFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;

@@ -202,25 +202,26 @@
             app:strokeColor="#EEE">
 
             <LinearLayout
+                android:id="@+id/historyPayment"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
                 android:gravity="center"
                 android:padding="10dp">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:srcCompat="@drawable/icon_favorite" />
+                    app:srcCompat="@drawable/baseline_payment_24" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_weight="1"
-                    android:text="Bài đăng yêu thích"
+                    android:text="Ví của tôi"
                     android:textColor="#000"
                     android:textSize="20sp" />
 
