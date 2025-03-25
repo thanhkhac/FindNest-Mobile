@@ -83,6 +83,7 @@
             app:boxStrokeWidth="1dp"
             app:endIconMode="clear_text"
             app:hintTextColor="#DC3545"
+            app:endIconTint="#DC3545"
             app:layout_constraintTop_toBottomOf="@id/login_title">  <!-- Adds a clear (X) button -->
 
             <com.google.android.material.textfield.TextInputEditText
@@ -111,8 +112,9 @@
             app:boxCornerRadiusTopStart="8dp"
             app:boxStrokeColor="#DC3545"
             app:boxStrokeWidth="1dp"
-            app:endIconMode="clear_text"
+            app:endIconMode="password_toggle"
             app:hintTextColor="#DC3545"
+            app:endIconTint="#DC3545"
             app:layout_constraintTop_toBottomOf="@id/username_input_container">  <!-- Adds a clear (X) button -->
 
             <com.google.android.material.textfield.TextInputEditText
