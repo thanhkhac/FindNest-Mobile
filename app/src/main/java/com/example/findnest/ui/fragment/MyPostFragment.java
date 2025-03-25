@@ -92,9 +92,8 @@ public class MyPostFragment extends Fragment {
                     if (newPosts.isEmpty()) {
                         isLastPage = true;
                     } else {
-                        int startIndex = postList.size();
                         postList.addAll(newPosts);
-                        adapter.notifyItemRangeInserted(startIndex, newPosts.size());
+                        adapter.notifyItemRangeInserted(postList.size(), newPosts.size());
                         currentPage++;
                     }
                 } else {

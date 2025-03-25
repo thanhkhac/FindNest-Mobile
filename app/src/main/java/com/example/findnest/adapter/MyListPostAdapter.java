@@ -2,6 +2,7 @@ package com.example.findnest.adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.findnest.R;
 import com.example.findnest.model.Post;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 import java.util.Locale;
@@ -112,8 +114,16 @@ public class MyListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
 
                 myPostHolder.tvPriority.setBackgroundTintList(ColorStateList.valueOf(priorityBgColor));
-                GradientDrawable drawable = (GradientDrawable) myPostHolder.parentLayout.getBackground();
-                drawable.setStroke(5, borderColor);
+
+//                GradientDrawable drawable = (GradientDrawable) myPostHolder.parentLayout.getBackground();
+//                drawable.setStroke(3, borderColor);
+
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setColor(Color.WHITE);
+                drawable.setCornerRadius(20);
+                drawable.setStroke(3, borderColor);
+                myPostHolder.parentLayout.setBackground(drawable);
+
             } else {
                 myPostHolder.tvPriority.setVisibility(View.GONE);
             }

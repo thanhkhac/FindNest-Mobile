@@ -46,6 +46,7 @@ public class AccountFragment extends Fragment {
     private final String ARGS_USER_CONTACTPHONENUMBER = "contactPhoneNumber";
     private final String ARGS_USER_ZALO = "zalo";
     private final String ARGS_IMAGE_URL = "imageUrl";
+    private final String ARGS_BALANCE = "balance";
     public final String BASE_UPLOAD_URL = "https://thanhkhac.id.vn";
 
 
@@ -122,7 +123,12 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        btn_go_to_my_post.setOnClickListener(v->{
+        btn_go_to_my_post.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(ARGS_USER_ID, user.getId());
+            bundle.putString(ARGS_USER_FULLNAME, user.getFullName() == null ? "" : user.getFullName());
+            bundle.putString(ARGS_IMAGE_URL, imageUrl);
+
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
             transaction.replace(R.id.frame_container, new MyPostFragment());
             transaction.addToBackStack(null); // Allows back navigation

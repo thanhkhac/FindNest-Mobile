@@ -1,5 +1,7 @@
 package com.example.findnest.model.response.user_for_public;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +18,5 @@ public class UserForPublicDetailRes {
     private String contactPhoneNumber;
     private String zalo;
     private String facebook;
+    private BigDecimal balance;
 }
