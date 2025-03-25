@@ -161,8 +161,6 @@ public class UpdatePostFragment extends Fragment {
         switchAiAutoFill = view.findViewById(R.id.switch_ai_auto_fill);
         imgThumbnailPreview = view.findViewById(R.id.img_thumbnail_preview);
         mapView = view.findViewById(R.id.map_view);
-        progressBar = view.findViewById(R.id.progress_bar);
-        overlay = view.findViewById(R.id.overlay);
         loadingContainer = view.findViewById(R.id.loading_container);
 
         // Ẩn các thành phần liên quan đến images
