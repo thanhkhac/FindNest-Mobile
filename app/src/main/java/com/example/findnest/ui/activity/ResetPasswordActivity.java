@@ -11,15 +11,12 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.findnest.R;
+import com.example.findnest.api.IAuthenticationAPI;
 import com.example.findnest.api.IUserAPI;
 import com.example.findnest.api.client.auth.AuthManager;
 import com.example.findnest.api.client.retrofit.RetrofitClient;
-import com.example.findnest.model.request.user.ForgotPasswordReq;
 import com.example.findnest.model.request.user.ResetPasswordReq;
 
 import retrofit2.Call;
@@ -35,13 +32,13 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private EditText input_confirmation_password, input_password, input_code, input_email;
 
     private AuthManager authManager;
-    private IUserAPI userAPI;
+    private IAuthenticationAPI userAPI;
     private final String PUT_EXTRA_EMAIL = "email";
     private String email;
 
     void Init() {
         authManager = new AuthManager(ResetPasswordActivity.this);
-        userAPI = RetrofitClient.getClient(authManager).create(IUserAPI.class);
+        userAPI = RetrofitClient.getClient(authManager).create(IAuthenticationAPI.class);
 
         clock = findViewById(R.id.clock);
         register_text = findViewById(R.id.register_text);

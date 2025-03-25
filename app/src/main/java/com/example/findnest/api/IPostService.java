@@ -1,6 +1,5 @@
 package com.example.findnest.api;
-import com.example.findnest.model.Post;
-    
+
 import com.example.findnest.model.requestdtos.FileForCreateUpdateRequest;
 import com.example.findnest.model.responsedtos.PostDetailResponse;
 
@@ -18,8 +17,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface IPostService
-{
+public interface IPostService {
     @Multipart
     @POST("api/post")
     Call<PostDetailResponse> createPost(
@@ -42,26 +40,53 @@ public interface IPostService
     @Multipart
     @PUT("api/post/{id}")
     Call<Void> updatePost(
-            @Path("id") UUID postId,
-            @Part MultipartBody.Part thumbnail,
-            @Part MultipartBody.Part image360,
-            @Query("title") String title,
-            @Query("price") double price,
-            @Query("isNegotiatedPrice") boolean isNegotiatedPrice,
-            @Query("address") String address,
-            @Query("area") int area,
-            @Query("description") String description,
-            @Query("latitude") double latitude,
-            @Query("longitude") double longitude,
-            @Query("wardCode") String wardCode,
-            @Query("bedRoomCount") int bedRoomCount,
-            @Query("bathRoomCount") int bathRoomCount,
-            @Query("images") List<FileForCreateUpdateRequest> images,
-            @Query("isAiDescription") boolean isAiDescription
+            @Path("id")
+            UUID postId,
+            @Part
+            MultipartBody.Part thumbnail,
+            @Part
+            MultipartBody.Part image360,
+            @Query("title")
+            String title,
+            @Query("price")
+            double price,
+            @Query("isNegotiatedPrice")
+            boolean isNegotiatedPrice,
+            @Query("address")
+            String address,
+            @Query("area")
+            int area,
+            @Query("description")
+            String description,
+            @Query("latitude")
+            double latitude,
+            @Query("longitude")
+            double longitude,
+            @Query("wardCode")
+            String wardCode,
+            @Query("bedRoomCount")
+            int bedRoomCount,
+            @Query("bathRoomCount")
+            int bathRoomCount,
+            @Query("images")
+            List<FileForCreateUpdateRequest> images,
+            @Query("isAiDescription")
+            boolean isAiDescription
     );
 
     @GET("api/post/{id}")
-    Call<PostDetailResponse> getPost(@Path("id") UUID postId);
+    Call<PostDetailResponse> getPost(
+            @Path("id")
+            UUID postId);
+
+    @GET("api/post")
+    Call<List<Post>> getPosts(
+            @Query("pageNumber")
+            int page,
+            @Query("pageSize")
+            int size
+    );
+}
 
 @GET("api/post")
     Call<List<Post>> getPosts(

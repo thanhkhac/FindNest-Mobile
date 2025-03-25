@@ -33,6 +33,9 @@
         <activity
             android:name=".ui.activity.ForgotPasswordActivity"
             android:exported="false" />
+        <!--        <activity-->
+        <!--            android:name=".ui.ListPostActivity"-->
+        <!--            android:exported="false" />-->
         <activity
             android:name=".ui.activity.LoadingActivity"
             android:exported="true">
