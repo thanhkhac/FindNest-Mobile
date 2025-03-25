@@ -1,5 +1,6 @@
 package com.example.findnest.api;
 
+import com.example.findnest.model.Post;
 import com.example.findnest.model.requestdtos.FileForCreateUpdateRequest;
 import com.example.findnest.model.responsedtos.PostDetailResponse;
 
@@ -86,9 +87,8 @@ public interface IPostService {
             @Query("pageSize")
             int size
     );
-}
 
-@GET("api/post")
+    @GET("api/post")
     Call<List<Post>> getPosts(
             @Query("minPrice") Double minPrice,
             @Query("maxPrice") Double maxPrice,
@@ -104,3 +104,5 @@ public interface IPostService {
     );
 
 }
+
+
