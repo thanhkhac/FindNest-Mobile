@@ -8,8 +8,8 @@
     <!-- Hình ảnh xem trước -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_preview"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.MediumComponent"
         app:strokeWidth="2dp"
