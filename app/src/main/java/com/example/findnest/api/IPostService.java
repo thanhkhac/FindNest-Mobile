@@ -21,35 +21,21 @@ import retrofit2.http.Query;
 public interface IPostService {
     @Multipart
     @POST("api/post")
-    Call<Void> createPost(
-            @Part("title")
-            RequestBody title,
-            @Part("price")
-            RequestBody price,
-            @Part("isNegotiatedPrice")
-            RequestBody isNegotiatedPrice,
-            @Part("address")
-            RequestBody address,
-            @Part("area")
-            RequestBody area,
-            @Part("description")
-            RequestBody description,
-            @Part("latitude")
-            RequestBody latitude,
-            @Part("longitude")
-            RequestBody longitude,
-            @Part("wardCode")
-            RequestBody wardCode,
-            @Part("bedRoomCount")
-            RequestBody bedRoomCount,
-            @Part("bathRoomCount")
-            RequestBody bathRoomCount,
-            @Part
-            List<MultipartBody.Part> images,
-            @Part("isAiDescription")
-            RequestBody isAiDescription,
-            @Part
-            MultipartBody.Part thumbnail
+    Call<PostDetailResponse> createPost(
+            @Part("title") RequestBody title,
+            @Part("price") RequestBody price,
+            @Part("isNegotiatedPrice") RequestBody isNegotiatedPrice,
+            @Part("address") RequestBody address,
+            @Part("area") RequestBody area,
+            @Part("description") RequestBody description,
+            @Part("latitude") RequestBody latitude,
+            @Part("longitude") RequestBody longitude,
+            @Part("wardCode") RequestBody wardCode,
+            @Part("bedRoomCount") RequestBody bedRoomCount,
+            @Part("bathRoomCount") RequestBody bathRoomCount,
+            @Part List<MultipartBody.Part> images,
+            @Part("isAiDescription") RequestBody isAiDescription,
+            @Part MultipartBody.Part thumbnail
     );
 
     @Multipart
