@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,11 +37,16 @@ import com.example.findnest.api.IRegionService;
 import com.example.findnest.api.client.auth.AuthManager;
 import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.model.responsedtos.GeocodingResponse;
+import com.example.findnest.model.responsedtos.PostDetailResponse;
 import com.example.findnest.model.responsedtos.RegionResponse;
+import com.example.findnest.ui.activity.MainActivity;
+import com.example.findnest.ui.fragment.PostDetailFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -71,6 +77,8 @@ public class CreatePostFragment extends Fragment {
     private static final int REQUEST_CODE_IMAGES = 2;
     private static final int REQUEST_PERMISSIONS = 3;
 
+    private TextInputLayout tilTitle, tilPrice, tilArea, tilBedroomCount, tilBathroomCount, tilDescription, tilSpecificAddress, tilWard, tilDistrict, tilProvince;
+    private TextView tvThumbnailError, tvImagesError, tvMapError;
     // Views
     private TextInputEditText editTitle, editPrice, editArea, editBedroomCount, editBathroomCount;
     private TextInputEditText editDescription, editSpecificAddress;
@@ -137,6 +145,22 @@ public class CreatePostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_post, container, false);
+
+        // Ánh xạ TextInputLayout
+        tilTitle = view.findViewById(R.id.til_title);
+        tilPrice = view.findViewById(R.id.til_price);
+        tilArea = view.findViewById(R.id.til_area);
+        tilBedroomCount = view.findViewById(R.id.til_bedroom_count);
+        tilBathroomCount = view.findViewById(R.id.til_bathroom_count);
+        tilDescription = view.findViewById(R.id.til_description);
+        tilSpecificAddress = view.findViewById(R.id.til_specific_address);
+        tilWard = view.findViewById(R.id.til_ward);
+        tilDistrict = view.findViewById(R.id.til_district);
+        tilProvince = view.findViewById(R.id.til_province);
+
+        tvThumbnailError = view.findViewById(R.id.tv_thumbnail_error);
+        tvImagesError = view.findViewById(R.id.tv_images_error);
+        tvMapError = view.findViewById(R.id.tv_map_error);
 
         // Ánh xạ views
         editTitle = view.findViewById(R.id.edit_title);
@@ -558,22 +582,217 @@ public class CreatePostFragment extends Fragment {
 
     private void showLoading(boolean isLoading) {
         if (isLoading) {
-            // Hiển thị toàn bộ loading_container
             loadingContainer.setVisibility(View.VISIBLE);
-            getView().setEnabled(false); // Vô hiệu hóa giao diện fragment
-            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
-            if (bottomNavigationView != null) {
-                bottomNavigationView.setEnabled(false); // Vô hiệu hóa navigation
+            getView().setEnabled(false);
+            // Tắt toàn bộ các mục trong BottomNavigationView
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).setAllMenuItemsEnabled(false);
             }
         } else {
-            // Ẩn toàn bộ loading_container
             loadingContainer.setVisibility(View.GONE);
-            getView().setEnabled(true); // Khôi phục giao diện fragment
-            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
-            if (bottomNavigationView != null) {
-                bottomNavigationView.setEnabled(true); // Khôi phục navigation
+            getView().setEnabled(true);
+            // Bật lại toàn bộ các mục trong BottomNavigationView
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).setAllMenuItemsEnabled(true);
             }
         }
+    }
+
+    private boolean validateInput(String title, String priceStr, String areaStr, String bedroomCountStr,
+                                  String bathroomCountStr, String description, String specificAddress,
+                                  boolean isNegotiablePrice) {
+        boolean isValid = true;
+
+        // Reset lỗi trước khi validate
+        tilTitle.setError(null);
+        tilPrice.setError(null);
+        tilArea.setError(null);
+        tilBedroomCount.setError(null);
+        tilBathroomCount.setError(null);
+        tilDescription.setError(null);
+        tilSpecificAddress.setError(null);
+        tilWard.setError(null);
+        tilDistrict.setError(null);
+        tilProvince.setError(null);
+        tvThumbnailError.setText("");
+        tvThumbnailError.setVisibility(View.GONE);
+        tvImagesError.setText("");
+        tvImagesError.setVisibility(View.GONE);
+        tvMapError.setText("");
+        tvMapError.setVisibility(View.GONE);
+
+        // 1. Validate tiêu đề (title)
+        if (title.isEmpty()) {
+            tilTitle.setError("Tiêu đề không được để trống");
+            editTitle.requestFocus();
+            isValid = false;
+        } else if (title.length() > 500) {
+            tilTitle.setError("Tiêu đề không được vượt quá 500 ký tự");
+            editTitle.requestFocus();
+            isValid = false;
+        }
+
+        // 2. Validate giá (price)
+        if (!isNegotiablePrice) {
+            if (priceStr.isEmpty()) {
+                tilPrice.setError("Giá không được để trống");
+                editPrice.requestFocus();
+                isValid = false;
+            } else {
+                try {
+                    double price = Double.parseDouble(priceStr);
+                    if (price < 0) {
+                        tilPrice.setError("Giá không được âm");
+                        editPrice.requestFocus();
+                        isValid = false;
+                    } else if (price > 1_000_000_000_000.0) {
+                        tilPrice.setError("Giá vượt quá giới hạn cho phép");
+                        editPrice.requestFocus();
+                        isValid = false;
+                    }
+                } catch (NumberFormatException e) {
+                    tilPrice.setError("Giá phải là số hợp lệ");
+                    editPrice.requestFocus();
+                    isValid = false;
+                }
+            }
+        }
+
+        // 3. Validate diện tích (area)
+        if (areaStr.isEmpty()) {
+            tilArea.setError("Diện tích không được để trống");
+            editArea.requestFocus();
+            isValid = false;
+        } else {
+            try {
+                int area = Integer.parseInt(areaStr);
+                if (area <= 0) {
+                    tilArea.setError("Diện tích phải lớn hơn 0");
+                    editArea.requestFocus();
+                    isValid = false;
+                } else if (area > 10_000) {
+                    tilArea.setError("Diện tích vượt quá giới hạn cho phép");
+                    editArea.requestFocus();
+                    isValid = false;
+                }
+            } catch (NumberFormatException e) {
+                tilArea.setError("Diện tích phải là số nguyên hợp lệ");
+                editArea.requestFocus();
+                isValid = false;
+            }
+        }
+
+        // 4. Validate số phòng ngủ (bedroomCount)
+        if (bedroomCountStr.isEmpty()) {
+            tilBedroomCount.setError("Số phòng ngủ không được để trống");
+            editBedroomCount.requestFocus();
+            isValid = false;
+        } else {
+            try {
+                int bedroomCount = Integer.parseInt(bedroomCountStr);
+                if (bedroomCount < 0) {
+                    tilBedroomCount.setError("Số phòng ngủ không được âm");
+                    editBedroomCount.requestFocus();
+                    isValid = false;
+                } else if (bedroomCount > 50) {
+                    tilBedroomCount.setError("Số phòng ngủ vượt quá giới hạn");
+                    editBedroomCount.requestFocus();
+                    isValid = false;
+                }
+            } catch (NumberFormatException e) {
+                tilBedroomCount.setError("Số phòng ngủ phải là số nguyên hợp lệ");
+                editBedroomCount.requestFocus();
+                isValid = false;
+            }
+        }
+
+        // 5. Validate số phòng tắm (bathroomCount)
+        if (bathroomCountStr.isEmpty()) {
+            tilBathroomCount.setError("Số phòng tắm không được để trống");
+            editBathroomCount.requestFocus();
+            isValid = false;
+        } else {
+            try {
+                int bathroomCount = Integer.parseInt(bathroomCountStr);
+                if (bathroomCount < 0) {
+                    tilBathroomCount.setError("Số phòng tắm không được âm");
+                    editBathroomCount.requestFocus();
+                    isValid = false;
+                } else if (bathroomCount > 50) {
+                    tilBathroomCount.setError("Số phòng tắm vượt quá giới hạn");
+                    editBathroomCount.requestFocus();
+                    isValid = false;
+                }
+            } catch (NumberFormatException e) {
+                tilBathroomCount.setError("Số phòng tắm phải là số nguyên hợp lệ");
+                editBathroomCount.requestFocus();
+                isValid = false;
+            }
+        }
+
+        // 6. Validate mô tả (description)
+        if (description.length() > 1000) {
+            tilDescription.setError("Mô tả không được vượt quá 1000 ký tự");
+            editDescription.requestFocus();
+            isValid = false;
+        }
+
+        // 7. Validate địa chỉ cụ thể (specificAddress)
+        if (specificAddress.length() > 200) {
+            tilSpecificAddress.setError("Địa chỉ không được vượt quá 200 ký tự");
+            editSpecificAddress.requestFocus();
+            isValid = false;
+        }
+
+        // 8. Validate ward (phường/xã)
+        if (spinnerWard.getSelectedItemPosition() == 0) {
+            tilWard.setError("Vui lòng chọn phường/xã");
+            spinnerWard.requestFocus();
+            isValid = false;
+        }
+
+        if (spinnerDistrict.getSelectedItemPosition() == 0) {
+            tilDistrict.setError("Vui lòng chọn quận/huyện");
+            spinnerDistrict.requestFocus();
+            isValid = false;
+        }
+
+        if (spinnerProvince.getSelectedItemPosition() == 0) {
+            tilProvince.setError("Vui lòng chọn tỉnh/thành phố");
+            spinnerProvince.requestFocus();
+            isValid = false;
+        }
+
+        // 9. Validate thumbnail
+        if (thumbnailUri == null) {
+            tvThumbnailError.setText("Vui lòng tải lên ảnh bìa");
+            tvThumbnailError.setVisibility(View.VISIBLE);
+            btnUploadThumbnail.requestFocus();
+            isValid = false;
+        }
+
+        // 10. Validate danh sách ảnh (images)
+        if (selectedImageFiles.isEmpty()) {
+            tvImagesError.setText("Vui lòng tải lên ít nhất 1 ảnh");
+            tvImagesError.setVisibility(View.VISIBLE);
+            btnUploadImages.requestFocus();
+            isValid = false;
+        } else if (selectedImageFiles.size() > 10) {
+            tvImagesError.setText("Chỉ được chọn tối đa 10 ảnh");
+            tvImagesError.setVisibility(View.VISIBLE);
+            btnUploadImages.requestFocus();
+            isValid = false;
+        }
+
+        // 11. Validate vị trí trên bản đồ
+        if (selectedLocation == null) {
+            tvMapError.setText("Vui lòng chọn vị trí trên bản đồ");
+            tvMapError.setVisibility(View.VISIBLE);
+            mapView.requestFocus();
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     private void submitPost() {
@@ -587,11 +806,8 @@ public class CreatePostFragment extends Fragment {
         boolean isNegotiablePrice = switchNegotiablePrice.isChecked();
         boolean isAiDescription = switchAiAutoFill.isChecked();
 
-        // Kiểm tra dữ liệu bắt buộc
-        if (title.isEmpty() || areaStr.isEmpty() || bedroomCountStr.isEmpty() || bathroomCountStr.isEmpty() ||
-                spinnerWard.getSelectedItemPosition() == 0 || selectedLocation == null || thumbnailUri == null ||
-                selectedImageFiles.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng điền đầy đủ thông tin bắt buộc", Toast.LENGTH_SHORT).show();
+        if (!validateInput(title, priceStr, areaStr, bedroomCountStr, bathroomCountStr, description, specificAddress, isNegotiablePrice)) {
+            Snackbar.make(getView(), "Vui lòng kiểm tra và sửa lỗi", Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -602,9 +818,10 @@ public class CreatePostFragment extends Fragment {
         int bedroomCount = Integer.parseInt(bedroomCountStr);
         int bathRoomCount = Integer.parseInt(bathroomCountStr);
         String wardCode = wards.get(spinnerWard.getSelectedItemPosition() - 1).getCode();
-        String address = specificAddress + ", " + wards.get(spinnerWard.getSelectedItemPosition() - 1).getFullName() + ", " +
-                districts.get(spinnerDistrict.getSelectedItemPosition() - 1).getFullName() + ", " +
-                provinces.get(spinnerProvince.getSelectedItemPosition() - 1).getFullName();
+        String address = specificAddress ;
+//                + ", " + wards.get(spinnerWard.getSelectedItemPosition() - 1).getFullName() + ", " +
+//                districts.get(spinnerDistrict.getSelectedItemPosition() - 1).getFullName() + ", " +
+//                provinces.get(spinnerProvince.getSelectedItemPosition() - 1).getFullName();
 
         // Chuẩn bị dữ liệu cho API
         RequestBody titleBody = RequestBody.create(MediaType.parse("text/plain"), title);
@@ -635,19 +852,26 @@ public class CreatePostFragment extends Fragment {
             imageParts.add(imagePart);
         }
         // Gửi yêu cầu API
-        Call<Void> call = postService.createPost(
+        Call<PostDetailResponse> call = postService.createPost(
                 titleBody, priceBody, isNegotiatedPriceBody, addressBody, areaBody, descriptionBody,
                 latitudeBody, longitudeBody, wardCodeBody, bedRoomCountBody, bathRoomCountBody,
                 imageParts, isAiDescriptionBody, thumbnailPart
         );
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<PostDetailResponse>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<PostDetailResponse> call, Response<PostDetailResponse> response) {
                 showLoading(false);
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Đăng bài thành công", Toast.LENGTH_SHORT).show();
-//                    resetForm();
+                    Log.i("API_RESPONSE", response.body().getId());
+                    String postId = response.body().getId();
+                    PostDetailFragment postDetailFragment = PostDetailFragment.newInstance(postId);
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frame_container, postDetailFragment)
+                            .addToBackStack(null) // Thêm vào back stack để quay lại được
+                            .commit();
                 } else {
                     try {
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có nội dung lỗi";
@@ -664,7 +888,7 @@ public class CreatePostFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<PostDetailResponse> call, Throwable t) {
                 showLoading(false);
                 Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("ERROR", t.getMessage());
@@ -672,28 +896,6 @@ public class CreatePostFragment extends Fragment {
         });
     }
 
-    private void resetForm() {
-        editTitle.setText("");
-        editPrice.setText("");
-        editArea.setText("");
-        editBedroomCount.setText("");
-        editBathroomCount.setText("");
-        editDescription.setText("");
-        editSpecificAddress.setText("");
-        switchNegotiablePrice.setChecked(false);
-        switchAiAutoFill.setChecked(false);
-        spinnerProvince.setSelection(0);
-        spinnerDistrict.setSelection(0);
-        spinnerWard.setSelection(0);
-        imgThumbnailPreview.setVisibility(View.GONE);
-        selectedImageFiles.clear();
-        imageAdapter.notifyDataSetChanged();
-        selectedLocation = null;
-        if (selectedMarker != null) {
-            mapView.getOverlays().remove(selectedMarker);
-            mapView.invalidate();
-        }
-    }
 
     @Override
     public void onResume() {

@@ -21,7 +21,7 @@ public interface IPostService
 {
     @Multipart
     @POST("api/post")
-    Call<Void> createPost(
+    Call<PostDetailResponse> createPost(
             @Part("title") RequestBody title,
             @Part("price") RequestBody price,
             @Part("isNegotiatedPrice") RequestBody isNegotiatedPrice,

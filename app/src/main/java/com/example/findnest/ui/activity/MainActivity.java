@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private AuthManager authManager;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     //Bundle savedInstanceState:
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         //R.layout.activity_main: Tham chiếu đến tệp activity_main.xml trong thư mục res/layout.
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         authManager = new AuthManager(MainActivity.this);
 
@@ -62,5 +63,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_container, new HomeFragment())
                 .commit();
+    }
+
+    public void setAllMenuItemsEnabled(boolean enable) {
+        for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+            bottomNavigationView.getMenu().getItem(i).setEnabled(enable);
+        }
     }
 }
