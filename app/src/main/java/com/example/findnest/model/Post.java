@@ -1,5 +1,7 @@
 package com.example.findnest.model;
 
+import com.example.findnest.model.response.user_for_public.UserForPublicDetailRes;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import lombok.*;
@@ -27,7 +29,7 @@ public class Post {
     private int bathRoomCount;
     private String createdAt;
     private Date updatedAt;
-    private String createdBy;
+    private UserForPublicDetailRes createdUser;
     private String updatedBy;
     private String deletedBy;
     private boolean isDeleted;

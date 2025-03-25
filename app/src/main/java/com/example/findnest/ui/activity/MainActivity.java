@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment;
 import com.example.findnest.R;
 import com.example.findnest.api.client.auth.AuthManager;
 import com.example.findnest.ui.CreatePostFragment;
-import com.example.findnest.ui.ListPostFragment;
 import com.example.findnest.ui.fragment.AccountFragment;
-import com.example.findnest.ui.fragment.CommentFragment;
 import com.example.findnest.ui.fragment.HomeFragment;
+import com.example.findnest.ui.fragment.ListPostFragment;
 import com.example.findnest.ui.fragment.PostDetailFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    //selectedFragment = PostDetailFragment.newInstance("92017737-39e8-4f94-80cb-f4a6d2c44dcf");
                     selectedFragment = new ListPostFragment();
+                    // selectedFragment = PostDetailFragment.newInstance("92017737-39e8-4f94-80cb-f4a6d2c44dcf");
                     break;
                 case R.id.nav_add:
                     selectedFragment = CreatePostFragment.newInstance(authManager);

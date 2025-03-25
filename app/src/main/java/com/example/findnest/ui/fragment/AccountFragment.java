@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,7 +51,7 @@ public class AccountFragment extends Fragment {
     private final String ARGS_BALANCE = "balance";
     public final String BASE_UPLOAD_URL = "https://thanhkhac.id.vn";
 
-
+    LinearLayout historyPayment;
     UserForPublicDetailRes user = new UserForPublicDetailRes();
 
     void Init(View view) {
@@ -180,11 +182,17 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        Init(view);
-        InitEvent();
-        getInfo();
+        historyPayment = view.findViewById(R.id.historyPayment);
+        historyPayment.setOnClickListener( h -> {
+            Toast.makeText(getContext(), "Bạn đã nhấn vào payment", Toast.LENGTH_SHORT).show();
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .replace(AccountFragment.this.getId(), new PaymentFragment())
+                    .commit();
+        });
+
         return view;
     }
 }

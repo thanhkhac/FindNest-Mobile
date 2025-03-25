@@ -87,6 +87,22 @@ public interface IPostService {
             @Query("pageSize")
             int size
     );
+
+    @GET("api/post")
+    Call<List<Post>> getPosts(
+            @Query("minPrice") Double minPrice,
+            @Query("maxPrice") Double maxPrice,
+            @Query("isNegotiatedPrice") Boolean isNegotiatedPrice,
+            @Query("isAllPrice") Boolean isAllPrice,
+            @Query("minArea") Integer minArea,
+            @Query("maxArea") Integer maxArea,
+            @Query("provinceCode") String provinceCode,
+            @Query("districtCode") String districtCode,
+            @Query("wardCode") String wardCode,
+            @Query("pageNumber") int page,
+            @Query("pageSize") int size
+    );
+
 }
 
 
