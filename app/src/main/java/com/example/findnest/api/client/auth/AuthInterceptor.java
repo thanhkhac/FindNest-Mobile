@@ -22,7 +22,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthInterceptor implements Interceptor {
 
-    private final String BASE_URL = "http://192.168.0.101:8080/";
+
+    private static final String BASE_URL = "https://thanhkhac.id.vn/";
+//    private final String BASE_URL = "http://192.168.0.101:8080/";
 //    private static final String BASE_URL = "https://10.0.2.2:7011/";
 
     private AuthManager _authManager;
@@ -45,18 +47,19 @@ public class AuthInterceptor implements Interceptor {
         Request originalRequest = chain.request();
         String accessToken = _authManager.getAccessToken();
 
-        //Attach access_token to request
+        //Attach access_token to new request
         Request newRequest = originalRequest
                 .newBuilder()
                 .header("Authorization", "Bearer " + accessToken)
                 .build();
 
         Response response = chain.proceed(newRequest);
+
         //If token expired (401), refresh token
         if (response.code() == 401) {
             response.close();
 
-            TokenModel tokenModel = getTokens(_authManager.getAccessToken(), _authManager.getRefreshToken());
+            TokenModel tokenModel = getToken(_authManager.getAccessToken(), _authManager.getRefreshToken());
 
             if (tokenModel != null) {
                 _authManager.saveTokens(tokenModel.getAccessToken(), tokenModel.getRefreshToken()); //save new tokens
@@ -72,7 +75,7 @@ public class AuthInterceptor implements Interceptor {
         return response;
     }
 
-    private TokenModel getTokens(String accessToken, String refreshToken) {
+    private TokenModel getToken(String accessToken, String refreshToken) {
         Log.d("RefreshToken", "");
         try {
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json")

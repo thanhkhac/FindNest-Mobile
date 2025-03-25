@@ -1,4 +1,4 @@
-package com.example.findnest.model.response.authentication;
+package com.example.findnest.model.request.user;
 
 
 import lombok.AllArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TokenModel {
-    private String accessToken;
-    private  String refreshToken;
+public class ForgotPasswordReq {
+    private  String email;
 }

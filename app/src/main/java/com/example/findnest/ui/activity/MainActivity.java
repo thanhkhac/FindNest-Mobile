@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_add:
                     selectedFragment = CreatePostFragment.newInstance(authManager);
                     break;
-                case R.id.nav_profile:
+                case R.id.nav_account:
                     selectedFragment = new AccountFragment();
                     break;
             }
