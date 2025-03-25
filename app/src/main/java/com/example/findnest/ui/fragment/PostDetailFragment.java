@@ -12,18 +12,23 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.findnest.R;
+import com.example.findnest.adapter.CommentListAdapter;
 import com.example.findnest.adapter.PostDetailPagerAdapter;
+import com.example.findnest.api.ICommentAPI;
 import com.example.findnest.api.IPostAPI;
 import com.example.findnest.api.client.auth.AuthManager;
+import com.example.findnest.model.response.comment.CommentDetailRes;
 import com.example.findnest.model.response.post.PostDetailRes;
 import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.google.android.material.tabs.TabLayout;
@@ -41,6 +46,9 @@ import retrofit2.Response;
 public class PostDetailFragment extends Fragment {
     private static final String ARG_POST_ID = "post_id";
     private String postId;
+
+    private List<CommentDetailRes> commentDetailRes;
+    private ICommentAPI iCommentAPI;
     public static PostDetailFragment newInstance(String postId) {
         PostDetailFragment fragment = new PostDetailFragment();
         Bundle args = new Bundle();
@@ -48,18 +56,21 @@ public class PostDetailFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    public static final String BASE_URL = "https://thanhkhac.id.vn/api/post/";
-    public static final String BASE_UPLOAD_URL = "https://thanhkhac.id.vn";
-    public TextView postTitle, postAddress, postArea, postRoom, postBathroom, postCreated, MoTa, Price, postCreatedPhone;
-    public TabLayout tabLayout;
-    public ViewPager2 viewPager;
-    public PostDetailPagerAdapter pagerAdapter;
+    private static final String BASE_URL = "https://thanhkhac.id.vn/api/post/";
+    private static final String BASE_UPLOAD_URL = "https://thanhkhac.id.vn";
+    private TextView postTitle, postAddress, postArea, postRoom, postBathroom, postCreated, MoTa, Price, postCreatedPhone, countComment;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
+    private PostDetailPagerAdapter pagerAdapter;
     String thumbnailUrl = "";
     List<String> slideModels = new ArrayList<>();
     PostDetailRes postDetail;
     private IPostAPI iPostService;
-    public WebView mapWebView;
+    private WebView mapWebView;
     private AuthManager authManager;
+    private LinearLayout linearLayoutComment;
+
+    private int countComments = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +86,17 @@ public class PostDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_post_detail, container, false);
         init(view);
         fetchData();
+        linearLayoutComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Bạn đã nhấn vào bình luận", Toast.LENGTH_SHORT).show();
+                Fragment commentFragment = CommentFragment.newInstance("92017737-39e8-4f94-80cb-f4a6d2c44dcf");
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(PostDetailFragment.this.getId(), commentFragment)  // Thay thế chính nó
+                        .addToBackStack(null)  // Cho phép quay lại bằng nút Back
+                        .commit();
+            }
+        });
         return view;
     }
 
@@ -100,6 +122,7 @@ public class PostDetailFragment extends Fragment {
                     postDetail = response.body();
                     importData();
                     loadMap(postDetail.getLatitude(), postDetail.getLongitude());
+                    fetchDataComment();
                 } else {
 
                     Toast.makeText(getContext(), "Lỗi lấy dữ liệu!", Toast.LENGTH_SHORT).show();
@@ -109,6 +132,7 @@ public class PostDetailFragment extends Fragment {
     }
 
     void init(View view) {
+        countComment = view.findViewById(R.id.countComment);
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
         postTitle = view.findViewById(R.id.postTitle);
@@ -120,6 +144,7 @@ public class PostDetailFragment extends Fragment {
         MoTa = view.findViewById(R.id.MoTa);
         Price = view.findViewById(R.id.Price);
         postCreatedPhone = view.findViewById(R.id.postCreatedPhone);
+        linearLayoutComment = view.findViewById(R.id.linearLayoutComment);
     }
 
     @SuppressLint("SetTextI18n")
@@ -180,6 +205,37 @@ public class PostDetailFragment extends Fragment {
             String jsCode = "javascript:updateMarker(" + latitude + ", " + longitude + ")";
             mapWebView.evaluateJavascript(jsCode, null);
         }, 3000);  // Đợi 3 giây để đảm bảo web đã load xong
+    }
+
+    void fetchDataComment(){
+        commentDetailRes = new ArrayList<>();
+        if (postId == null || postId.isEmpty()) {
+            Toast.makeText(getContext(), "Lỗi: Không tìm thấy ID bài đăng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        authManager = new AuthManager(getContext());
+        iCommentAPI = RetrofitClient.getClient(authManager).create(ICommentAPI.class);
+        iCommentAPI.getCommentsByPostId(postId).enqueue(new Callback<List<CommentDetailRes>>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onResponse(Call<List<CommentDetailRes>> call, Response<List<CommentDetailRes>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    commentDetailRes = response.body();
+                    commentDetailRes.forEach(cmt -> {
+                        countComments += cmt.getReplyCount() + 1;
+                    });
+                    countComment.setText("("+countComments+")");
+                } else {
+                    Toast.makeText(getContext(), "Lỗi lấy dữ liệu!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CommentDetailRes>> call, Throwable t) {
+                Log.e("API_ERROR", t.getMessage());
+                Toast.makeText(getContext(), "Không thể kết nối!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

@@ -41,6 +41,10 @@ dependencies {
     //for ui
     implementation ("com.google.android.material:material:1.10.0")
 
+    //valid
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
