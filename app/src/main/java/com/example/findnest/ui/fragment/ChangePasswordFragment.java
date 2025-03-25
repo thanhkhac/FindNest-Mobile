@@ -106,7 +106,7 @@ public class ChangePasswordFragment extends Fragment {
                     it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(it);
                 } else {
-                    Toast.makeText(context, "Lỗi: " + response.code() + ": " + response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Lỗi: Vui lòng kiểm tra lại mật khẩu hiện tại" , Toast.LENGTH_SHORT).show();
                 }
             }
 

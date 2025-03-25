@@ -85,9 +85,9 @@ public class AccountFragment extends Fragment {
                 //init bundle to pass data
                 Bundle bundle = new Bundle();
                 bundle.putString(ARGS_USER_ID, user.getId());
-                bundle.putString(ARGS_USER_FULLNAME, user.getFullName() == null ? "Chưa cập nhật" : user.getFullName());
-                bundle.putString(ARGS_USER_CONTACTPHONENUMBER, user.getContactPhoneNumber() == null ? "Chưa cập nhật" : user.getContactPhoneNumber());
-                bundle.putString(ARGS_USER_ZALO, user.getZalo() == null ? "Chưa cập nhật" : user.getZalo());
+                bundle.putString(ARGS_USER_FULLNAME, user.getFullName() == null ? "" : user.getFullName());
+                bundle.putString(ARGS_USER_CONTACTPHONENUMBER, user.getContactPhoneNumber() == null ? "" : user.getContactPhoneNumber());
+                bundle.putString(ARGS_USER_ZALO, user.getZalo() == null ? "" : user.getZalo());
                 bundle.putString(ARGS_IMAGE_URL, imageUrl);
 
                 //set arguments

@@ -55,6 +55,7 @@ public class LoadingActivity extends AppCompatActivity {
         if ( accessToken == null || refreshToken == null || accessToken.isEmpty() || refreshToken.isEmpty()) {
             Intent it = new Intent(LoadingActivity.this, LoginActivity.class);
             startActivity(it);
+            finish();
         }
 
         TokenModel tokenModel = new TokenModel();
@@ -86,6 +87,7 @@ public class LoadingActivity extends AppCompatActivity {
                     } else {
                         Intent it = new Intent(LoadingActivity.this, LoginActivity.class);
                         startActivity(it);
+                        finish();
                     }
                 }
 
@@ -93,6 +95,7 @@ public class LoadingActivity extends AppCompatActivity {
                 public void onFailure(Call<TokenModel> call, Throwable t) {
                     Intent it = new Intent(LoadingActivity.this, LoginActivity.class);
                     startActivity(it);
+                    finish();
                 }
             });
         } catch (Exception ex) {

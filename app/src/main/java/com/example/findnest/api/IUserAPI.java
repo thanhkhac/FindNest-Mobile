@@ -1,6 +1,8 @@
 package com.example.findnest.api;
 
 import com.example.findnest.model.request.user.ChangePasswordReq;
+import com.example.findnest.model.request.user.ForgotPasswordReq;
+import com.example.findnest.model.request.user.ResetPasswordReq;
 import com.example.findnest.model.request.user.UserContactInfoReq;
 import com.example.findnest.model.response.authentication.TokenModel;
 import com.example.findnest.model.response.post.PostDetailRes;
@@ -30,6 +32,16 @@ public interface IUserAPI {
     Call<Void> changePassword(
             @Body
             ChangePasswordReq request);
+
+    @POST("api/authentication/forgot-password")
+    Call<Void> sendEmailForgotPassword(
+            @Body
+            ForgotPasswordReq request);
+
+    @POST("api/authentication/reset-password")
+    Call<Void> resetPassword(
+            @Body
+            ResetPasswordReq request);
 
     @Multipart
     @PUT("api/user/manage/avatar")

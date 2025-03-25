@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameInput, passwordInput;
     private Button loginButton;
-    private TextView registerText;
+    private TextView registerText, forgot_password_text;
 
     private AuthManager authManager;
     private IAuthenticationAPI authService;
@@ -46,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.password_input);
         loginButton = findViewById(R.id.login_button);
         registerText = findViewById(R.id.register_text);
+        forgot_password_text = findViewById(R.id.forgot_password_text);
+
 
         // Xử lý nút Đăng Nhập
         loginButton.setOnClickListener(v -> {
@@ -66,6 +68,13 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
+
+        forgot_password_text.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
+
+
     }
 
     private void login(LoginRequest request) {
@@ -76,19 +85,20 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     authManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
                     //Log.d("Shared_Pref", new Gson().toJson(authManager.getAccessToken() + authManager.getRefreshToken()));
-                    Toast.makeText(LoginActivity.this, "Login successfull", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
                     Intent it = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(it);
                     
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<TokenModel> call, Throwable t) {
                 Log.e("LoginInFo", "Error: " + t.getMessage());
+                Toast.makeText(LoginActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
