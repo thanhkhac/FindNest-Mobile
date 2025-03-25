@@ -35,7 +35,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PaymentRes payment = paymentRes.get(position);
         DecimalFormat formatter = new DecimalFormat("#,###");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         holder.userPayment.setText(payment.getAction());
         holder.txtDatePay.setText(dateFormat.format(payment.getDate()));
         holder.txtMoney.setText(formatter.format(payment.getPrice())+"vnđ");

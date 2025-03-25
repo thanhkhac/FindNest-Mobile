@@ -224,7 +224,7 @@ public class PaymentFragment extends Fragment {
     }
     void importData() throws ParseException {
         paymentRes = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat formatter = new DecimalFormat("#,###");
         float total = 0;
         for (TransactionHistoryRes transaction : transactionHistoryRes) {
@@ -243,7 +243,7 @@ public class PaymentFragment extends Fragment {
                     .price(-plan.getPlan().getPrice().floatValue())
                     .build());
         }
-        paymentRes.sort(Comparator.comparing(PaymentRes::getDate));
+        paymentRes.sort(Comparator.comparing(PaymentRes::getDate).reversed());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         paymentAdapter = new PaymentAdapter(paymentRes);
         recyclerView.setAdapter(paymentAdapter);

@@ -13,6 +13,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,6 @@ import retrofit2.Response;
 public class PostDetailFragment extends Fragment {
     private static final String ARG_POST_ID = "post_id";
     private String postId;
-
     private List<CommentDetailRes> commentDetailRes;
     private ICommentAPI iCommentAPI;
     public static PostDetailFragment newInstance(String postId) {
@@ -90,7 +90,7 @@ public class PostDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Bạn đã nhấn vào bình luận", Toast.LENGTH_SHORT).show();
-                Fragment commentFragment = CommentFragment.newInstance("92017737-39e8-4f94-80cb-f4a6d2c44dcf");
+                Fragment commentFragment = CommentFragment.newInstance(postId);
                 requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(PostDetailFragment.this.getId(), commentFragment)  // Thay thế chính nó
                         .addToBackStack(null)  // Cho phép quay lại bằng nút Back

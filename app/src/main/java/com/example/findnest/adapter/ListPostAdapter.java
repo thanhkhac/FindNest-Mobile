@@ -12,12 +12,17 @@ import android.widget.TextView;
 import android.content.res.ColorStateList;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.findnest.R;
 import com.example.findnest.model.Post;
 import com.example.findnest.model.response.user_for_public.UserForPublicDetailRes;
+import com.example.findnest.ui.fragment.ListPostFragment;
+import com.example.findnest.ui.fragment.PostDetailFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,10 +36,13 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context _context;
     private List<Post> list_post;
     private boolean isLoadingAdded = false;
+    private Fragment listPostFragment;
 
-    public ListPostAdapter(Context context, List<Post> postList) {
+
+    public ListPostAdapter(Context context, List<Post> postList, Fragment listPostFragment) {
         this._context = context;
         this.list_post = postList;
+        this.listPostFragment = listPostFragment;
     }
 
     @Override
@@ -73,6 +81,14 @@ public class ListPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             postHolder.tvBedroom.setText(String.valueOf(post.getBedRoomCount()));
             postHolder.tvBathroom.setText(String.valueOf(post.getBathRoomCount()));
             postHolder.tvOwner.setText(post.getCreatedUser().getFullName() + "");
+
+            postHolder.tvTitle.setOnClickListener(v -> {
+                FragmentTransaction transaction = listPostFragment.getParentFragmentManager().beginTransaction();
+                transaction.hide(listPostFragment);  // Ẩn Fragment hiện tại
+                transaction.add(listPostFragment.getId(),  PostDetailFragment.newInstance(post.getId()));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            });
 
             String avatarUrl = post.getCreatedUser().getAvatar();
             if (avatarUrl != null && !avatarUrl.isEmpty()) {
