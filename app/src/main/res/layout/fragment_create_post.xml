@@ -297,7 +297,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#DC3545"
-                android:text="Đăng bài"
+                android:text="Hoàn thành"
                 app:cornerRadius="8dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

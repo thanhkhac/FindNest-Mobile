@@ -10,6 +10,7 @@ import java.util.UUID;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -40,43 +41,30 @@ public interface IPostService {
 
     @Multipart
     @PUT("api/post/{id}")
-    Call<Void> updatePost(
-            @Path("id")
-            UUID postId,
-            @Part
-            MultipartBody.Part thumbnail,
-            @Part
-            MultipartBody.Part image360,
-            @Query("title")
-            String title,
-            @Query("price")
-            double price,
-            @Query("isNegotiatedPrice")
-            boolean isNegotiatedPrice,
-            @Query("address")
-            String address,
-            @Query("area")
-            int area,
-            @Query("description")
-            String description,
-            @Query("latitude")
-            double latitude,
-            @Query("longitude")
-            double longitude,
-            @Query("wardCode")
-            String wardCode,
-            @Query("bedRoomCount")
-            int bedRoomCount,
-            @Query("bathRoomCount")
-            int bathRoomCount,
-            @Query("images")
-            List<FileForCreateUpdateRequest> images,
-            @Query("isAiDescription")
-            boolean isAiDescription
+    Call<PostDetailResponse> updatePost(
+            @Path("id") UUID id,
+            @Part("title") RequestBody title,
+            @Part("price") RequestBody price,
+            @Part("isNegotiatedPrice") RequestBody isNegotiatedPrice,
+            @Part("address") RequestBody address,
+            @Part("area") RequestBody area,
+            @Part("description") RequestBody description,
+            @Part("latitude") RequestBody latitude,
+            @Part("longitude") RequestBody longitude,
+            @Part("wardCode") RequestBody wardCode,
+            @Part("bedRoomCount") RequestBody bedRoomCount,
+            @Part("bathRoomCount") RequestBody bathRoomCount,
+            @Part("isAiDescription") RequestBody isAiDescription,
+            @Part MultipartBody.Part thumbnail
     );
 
     @GET("api/post/{id}")
     Call<PostDetailResponse> getPost(
+            @Path("id")
+            UUID postId);
+
+    @DELETE("api/post/{id}")
+    Call<Void> deletePost(
             @Path("id")
             UUID postId);
 

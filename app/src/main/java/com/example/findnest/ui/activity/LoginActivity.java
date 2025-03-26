@@ -14,9 +14,17 @@ import com.example.findnest.R;
 import com.example.findnest.api.IAuthenticationAPI;
 import com.example.findnest.api.client.retrofit.RetrofitClient;
 import com.example.findnest.api.client.auth.AuthManager;
+import com.example.findnest.model.ErrorResponse;
 import com.example.findnest.model.request.authentication.LoginRequest;
 import com.example.findnest.model.response.authentication.TokenModel;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,27 +86,60 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(LoginRequest request) {
-        Log.d("Login", "Request:  " + new Gson().toJson(request));
+        Log.d("Login", "Request: " + new Gson().toJson(request));
         authService.login(request).enqueue(new Callback<TokenModel>() {
             @Override
             public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
+                Log.d("LoginResponseCode", "Response Code: " + response.code()); // Log mã trạng thái
                 if (response.isSuccessful() && response.body() != null) {
                     authManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
-                    //Log.d("Shared_Pref", new Gson().toJson(authManager.getAccessToken() + authManager.getRefreshToken()));
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
                     Intent it = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(it);
-                    
                 } else {
-                    Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                    try {
+                        if (response.errorBody() != null) {
+                            String errorBody = response.errorBody().string();
+                            Log.d("LoginErrorBody", "Error Body: " + errorBody);
+
+                            Gson gson = new Gson();
+                            ErrorResponse errorResponse = gson.fromJson(errorBody, ErrorResponse.class);
+                            Log.d("LoginErrorResponse", "Parsed Error: " + new Gson().toJson(errorResponse));
+
+                            if (errorResponse.getErrors() != null) {
+                                Map<String, List<String>> errors = errorResponse.getErrors();
+                                if (errors.containsKey("unauthorized")) {
+                                    Toast.makeText(LoginActivity.this, "Sai thông tin đăng nhập", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    String message = errorResponse.getMessage() != null ? errorResponse.getMessage() : "Đăng nhập thất bại";
+                                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                String message = errorResponse.getMessage() != null ? errorResponse.getMessage() : "Đăng nhập thất bại";
+                                Toast.makeText(LoginActivity.this, response.code() + " - " + message, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Log.d("LoginErrorBody", "Error Body is null");
+                            Toast.makeText(LoginActivity.this, response.code() + " - Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.e("LoginError", "IOException: " + e.getMessage());
+                        Toast.makeText(LoginActivity.this, "Lỗi xử lý phản hồi từ server", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("LoginError", "Exception: " + e.getMessage());
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<TokenModel> call, Throwable t) {
-                Log.e("LoginInFo", "Error: " + t.getMessage());
-                Toast.makeText(LoginActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("LoginInFo", "Error: " + t.getMessage(), t); // In stack trace
+//                Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Sai thông tin đăng nhập", Toast.LENGTH_SHORT).show();
             }
         });
     }

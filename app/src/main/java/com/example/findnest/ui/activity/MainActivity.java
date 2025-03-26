@@ -12,6 +12,7 @@ import com.example.findnest.ui.fragment.AccountFragment;
 import com.example.findnest.ui.fragment.HomeFragment;
 import com.example.findnest.ui.fragment.ListPostFragment;
 import com.example.findnest.ui.fragment.PostDetailFragment;
+import com.example.findnest.ui.fragment.UpdatePostFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_add:
                     selectedFragment = CreatePostFragment.newInstance(authManager);
+//                    selectedFragment = UpdatePostFragment.newInstance(authManager, "4ed402dd-9c6f-4226-97b0-d16e63415a4a");
                     break;
                 case R.id.nav_account:
                     selectedFragment = new AccountFragment();
